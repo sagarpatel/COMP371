@@ -1,0 +1,32 @@
+Quick Guide to compileing without Visual Studio.
+
+
+This method requires that the source folder contains glut.h and glut.lib.
+
+The source file headers should be
+#include <windows.h>
+#include 'glut.h'
+and whatever after that.
+
+Using gcc or g++ compiler from Mingw install.
+
+Type Mysys in start menu to open up terminal.
+
+Naviagte to source folder.
+
+To compile a source code 'main.cpp', type the following in the terminal"
+
+g++ -o main1 -Wall main.cpp glut32.lib -lopengl32 -lglu32
+
+This produces a main1.exe in the same folder as the source.
+
+It may also require that glut.h be placed in 'include/GL'
+folder of MinGw
+
+
+Variations of this may work,perhaps with less arguments.
+
+References:
+			http://www.opengl.org/wiki/MinGW
+			
+			https://users.cs.jmu.edu/bernstdh/web/common/help/cpp_mingw-glut-setup.php

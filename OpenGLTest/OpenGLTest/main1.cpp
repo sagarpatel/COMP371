@@ -7,7 +7,7 @@
 /* DATED 4th May 2004		RAMGOPAL R		r_rajago@cs.concordia.ca
 /* 
 /****************************************************************************************/
-
+#include <windows.h>
 #include "glut.h"
 #include <stdio.h>
 
