@@ -47,8 +47,8 @@ void init(void)
 	cam_up[1] = 1;
 	cam_up[2] = 0;
 
-	cam_phi = 90.0 * (PI/180);
-	cam_theta = 90.0;
+	cam_phi = 18;//90.0 * (PI/180);
+	cam_theta = -15.0;
 
 	glMatrixMode(GL_PROJECTION);
 								// Set the current openGL matrix to GL_PROJECTION ie projection matrix.
@@ -131,7 +131,7 @@ void display(void)
 
 	showReferenceAxis();
 
-	glColor3f(0.2, 0.2, 0.2);
+	glColor3f(0.15, .75, 0.5);
 
 
 	glPushMatrix();
@@ -139,12 +139,36 @@ void display(void)
 	//glTranslatef(0.0,0, -2.0);
 	glRotatef(90,0,1,0);
 
-	for(int i =0; i<10;i++)
+	glRotatef(-90,1,0,0);
+
+	int height_increment;
+
+	for(int i =0; i<100;i++)
 	{
 
-		glTranslatef(0 , 0 , 0.1*i);
+		height_increment = i;
+
+		if (i>40)
+		{
+			height_increment = 40;
+		}
+
+
+
+		glTranslatef(0 , 0 , 0.5);
+
+		glRotatef(-0.2*height_increment,1,0,0);
+
+		glRotatef(2,0,1,0);
+
+		glRotatef(2,0,0,1);
 
 		drawCylindre(2.0,1.0,3);
+
+				
+		
+		
+		
 		
 	}
 
