@@ -27,7 +27,7 @@ int Wired_or_Shade = GLU_LINE;
 void init(void) 
 {
 
-	cam_radius = 15;
+	cam_radius = 100;
 
 	// Setting cam position to origin
 	// It is irreleveant since radius has been set to 10,
@@ -143,7 +143,7 @@ void display(void)
 
 	int height_increment;
 
-	for(int i =0; i<100;i++)
+	for(int i =0; i<150;i++)
 	{
 
 		height_increment = i;
@@ -155,7 +155,7 @@ void display(void)
 
 
 
-		glTranslatef(0 , 0 , 0.5);
+		glTranslatef(0 , 0 , 1.5);
 
 		glRotatef(-0.2*height_increment,1,0,0);
 
@@ -163,7 +163,7 @@ void display(void)
 
 		glRotatef(2,0,0,1);
 
-		drawCylindre(2.0,1.0,3);
+		drawCylindre(3.0,1.0,5);
 
 				
 		
