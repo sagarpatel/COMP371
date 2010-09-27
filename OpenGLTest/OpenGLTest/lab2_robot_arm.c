@@ -27,7 +27,7 @@ void display(void)
         glRotatef((float)shoulder_angle, 0.0, 0.0, 1.0);
         glTranslatef(arm1_length/2, 0.0, 0.0); 
         glPushMatrix();
-            glScalef(arm1_length, 0.01, 1.0);
+            glScalef(arm1_length, 2.0, 1.0);
             glutWireCube (1.0);
         glPopMatrix();
 
