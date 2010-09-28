@@ -69,21 +69,29 @@ void init(void)
 	glShadeModel (GL_SMOOTH);
 }
 
-void drawCylindre(float TopR, float BotR, float Height)
+void drawCylindre(float TopRadius, float BotRadius, float Height)
 {
 
-	GLUquadricObj* pObj;
+	int CylindreDetailRadius = 10;
+
+	int CylindreDetailHeight = 10;
+
+	GLUquadricObj* ObjPointer;
+
+
 	glPushMatrix();
-							// To keep the original texture intact we need to set the current color to WHITE.
+			
 
-	pObj = gluNewQuadric();
-							// Creates a new quadrics object and returns a pointer to it.
-	gluQuadricDrawStyle(pObj, Wired_or_Shade);
+	ObjPointer = gluNewQuadric();
+							
+	gluQuadricDrawStyle(ObjPointer, Wired_or_Shade);
 
-	gluCylinder(pObj, TopR, BotR, Height, 20, 20);
-							// Draw the cylinder with a radius : fRadius.
-	gluDeleteQuadric(pObj);
-							// Free the Quadric
+	gluCylinder(ObjPointer, TopRadius, BotRadius, Height, CylindreDetailRadius, CylindreDetailHeight);
+							
+	gluDeleteQuadric(ObjPointer);
+
+
+							
 	glPopMatrix();
 
 }	
@@ -143,18 +151,26 @@ void display(void)
 
 	int height_increment;
 
-	for(int i =0; i<150;i++)
+	for(int i =0; i<100;i++)
 	{
 
 		height_increment = i;
 
+		if (i>20)
+		{
+			height_increment = 20;
+		}
 		if (i>40)
 		{
 			height_increment = 40;
 		}
 
+		if (i>100)
+		{
+			height_increment = 10;
+		}
 
-
+	
 		glTranslatef(0 , 0 , 1.5);
 
 		glRotatef(-0.2*height_increment,1,0,0);
@@ -163,14 +179,134 @@ void display(void)
 
 		glRotatef(2,0,0,1);
 
-		drawCylindre(3.0,1.0,5);
-
-				
-		
-		
-		
+		drawCylindre(3.0,1.0,5);		
 		
 	}
+
+
+
+	for(int j =0; j<50; j++)
+	{
+
+		height_increment = j;
+
+		if (j>20)
+		{
+			height_increment = 20;
+		}
+	
+		glTranslatef(0 , 0 , 1.5);
+
+		glRotatef(0.235*height_increment,1,0,0);
+
+		glRotatef(2,0,1,0);
+
+		glRotatef(2,0,0,1);
+
+		drawCylindre(3.0,1.0,5);		
+		
+	}
+
+
+
+	for(int k =0; k<50; k++)
+	{
+
+		height_increment = k;
+
+		if (k>10)
+		{
+			height_increment = 40;
+		}
+
+	
+		glTranslatef(0 , 0 , 1.5);
+
+		glRotatef(0.2*height_increment,1,0,0);
+
+		glRotatef(2,0,1,0);
+
+		glRotatef(4,0,0,1);
+
+		drawCylindre(3.0,1.0,5);		
+		
+	}
+
+
+	for(int l =0; l<30; l++)
+	{
+
+		height_increment = l;
+
+		if (l>1)
+		{
+			height_increment = 40;
+		}
+
+	
+		glTranslatef(0 , 0 , 1.5);
+
+		glRotatef(-0.2*height_increment,1,0,0);
+
+		//glRotatef(2,0,1,0);
+
+		glRotatef(4,0,0,1);
+
+		drawCylindre(3.0,1.0,5);		
+		
+	}
+
+	for(int m =0; m<10; m++)
+	{
+
+		glTranslatef(0 , 0 , 1.5);
+
+		drawCylindre(3.0,1.0,5);		
+		
+	}
+
+
+	for(int n =0; n<15; n++)
+	{
+	
+		glTranslatef(0 , 0 , 1.5);
+
+		glRotatef(4,0,1,0);
+
+		glRotatef(4,1,0,0);
+	
+		drawCylindre(3.0,1.0,5);		
+		
+	}
+
+	for(int m =0; m<15; m++)
+	{
+
+		glTranslatef(0 , 0 , 1.5);
+
+		glRotatef(-10,1,1,0);
+
+		drawCylindre(3.0,1.0,5);		
+		
+	}
+
+	for(int m =0; m<15; m++)
+	{
+
+		glTranslatef(0 , 0 , 1.5);
+
+		glRotatef(10,1,1,0);
+
+		drawCylindre(3.0,1.0,5);		
+		
+	}
+
+
+	drawCylindre(5.0,1.0,10);
+
+
+
+
 
 	glPopMatrix();
 
@@ -199,11 +335,11 @@ void keyboard(unsigned char key, int x, int y)
 	{
 
 		case 'z':				// Move Camera forward.
-			cam_radius -= 0.1;
+			cam_radius -= 0.5;
 			break;
 
 		case 'Z' :				// Move Camera backward.
-			cam_radius += 0.1;
+			cam_radius += 0.5;
 			break;
 
 		case 'w':
