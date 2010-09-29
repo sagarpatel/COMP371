@@ -13,7 +13,9 @@
 
 GLdouble cam_position[3];	
 GLdouble cam_target[3];	
-GLdouble cam_up[3];		
+GLdouble cam_up[3];	
+
+
 
 double cam_theta;
 double cam_phi;
@@ -67,34 +69,65 @@ void init(void)
 	glClearColor (0.0, 0.0, 0.0, 0.0); 
 	glEnable(GL_DEPTH_TEST);
 	glShadeModel (GL_SMOOTH);
+
+	
+	//Sets lighting
+	glEnable(GL_LIGHTING);
+	glEnable(GL_LIGHT0);
+
+
+
+	// Allows color on models with lighting
+	glEnable(GL_COLOR_MATERIAL);
+	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+
+
+
 }
 
 void drawCylindre(float TopRadius, float BotRadius, float Height)
 {
 
-	int CylindreDetailRadius = 10;
+	int CylindreDetailRadius = 50;
+	int CylindreDetailHeight = 20;
 
-	int CylindreDetailHeight = 10;
+	GLUquadricObj* CylindrePointer;
 
-	GLUquadricObj* ObjPointer;
+	glPushMatrix();		
 
-
-	glPushMatrix();
-			
-
-	ObjPointer = gluNewQuadric();
+	CylindrePointer = gluNewQuadric();
 							
-	gluQuadricDrawStyle(ObjPointer, Wired_or_Shade);
+	gluQuadricDrawStyle(CylindrePointer, Wired_or_Shade);
 
-	gluCylinder(ObjPointer, TopRadius, BotRadius, Height, CylindreDetailRadius, CylindreDetailHeight);
+	gluCylinder(CylindrePointer, TopRadius, BotRadius, Height, CylindreDetailRadius, CylindreDetailHeight);
 							
-	gluDeleteQuadric(ObjPointer);
-
-
+	gluDeleteQuadric(CylindrePointer);
 							
 	glPopMatrix();
 
 }	
+
+
+
+void drawSphere(float Radius, GLint Slices, GLint Rings)
+{
+
+
+	GLUquadricObj* SpherePointer;
+
+	glPushMatrix();		
+
+	SpherePointer = gluNewQuadric();
+							
+	gluQuadricDrawStyle(SpherePointer, Wired_or_Shade);
+
+	gluSphere(SpherePointer, Radius, Slices, Rings);
+							
+	gluDeleteQuadric(SpherePointer);
+							
+	glPopMatrix();
+
+}
 
 void showReferenceAxis(void)
 						
@@ -139,8 +172,20 @@ void display(void)
 
 	showReferenceAxis();
 
-	glColor3f(0.15, .75, 0.5);
+	// Orignal Color (hand tweaked)
+	//	glColor3f(0.15, .75, 0.5);
 
+	// Forest Green (http://www.tayloredmktg.com/rgb/)
+	// Original code : 34-139-34
+	//	glColor3f(0.1328125, 0.54296875, 0.1328125);
+
+	// Sea Green
+	// Original Code : 46-139-87
+	//	glColor3f(0.1796875, 0.54296875, 0.33984375);
+
+	//Average of Forest and Sea
+		glColor3f(0.15625, 0.54296875, 0.236328125);
+	
 
 	glPushMatrix();
 
@@ -172,14 +217,28 @@ void display(void)
 
 	
 		glTranslatef(0 , 0 , 1.5);
-
 		glRotatef(-0.2*height_increment,1,0,0);
-
 		glRotatef(2,0,1,0);
-
 		glRotatef(2,0,0,1);
 
-		drawCylindre(3.0,1.0,5);		
+		drawCylindre(3.0,1.5,5);
+
+		//Draw Belly/Underside
+		//Wheat
+		//Orignal Code : 245-222-179
+			glColor3f(0.95703125, 0.8671875, 0.69921875);
+
+		glPushMatrix();
+		glTranslatef(0,-1.0,0);
+		drawSphere(2.75,50,25);
+		glPopMatrix();
+
+		//Return to Body Color
+
+		glColor3f(0.15625, 0.54296875, 0.236328125);
+
+		
+				
 		
 	}
 
@@ -203,7 +262,7 @@ void display(void)
 
 		glRotatef(2,0,0,1);
 
-		drawCylindre(3.0,1.0,5);		
+		drawCylindre(3.0,1.5,5);	
 		
 	}
 
@@ -228,7 +287,7 @@ void display(void)
 
 		glRotatef(4,0,0,1);
 
-		drawCylindre(3.0,1.0,5);		
+		drawCylindre(3.0,1.5,5);		
 		
 	}
 
@@ -252,7 +311,7 @@ void display(void)
 
 		glRotatef(4,0,0,1);
 
-		drawCylindre(3.0,1.0,5);		
+		drawCylindre(3.0,1.5,5);			
 		
 	}
 
@@ -261,7 +320,7 @@ void display(void)
 
 		glTranslatef(0 , 0 , 1.5);
 
-		drawCylindre(3.0,1.0,5);		
+		drawCylindre(3.0,1.5,5);			
 		
 	}
 
@@ -275,7 +334,7 @@ void display(void)
 
 		glRotatef(4,1,0,0);
 	
-		drawCylindre(3.0,1.0,5);		
+		drawCylindre(3.0,1.5,5);		
 		
 	}
 
@@ -286,7 +345,7 @@ void display(void)
 
 		glRotatef(-10,1,1,0);
 
-		drawCylindre(3.0,1.0,5);		
+		drawCylindre(3.0,1.5,5);	
 		
 	}
 
@@ -297,7 +356,7 @@ void display(void)
 
 		glRotatef(10,1,1,0);
 
-		drawCylindre(3.0,1.0,5);		
+		drawCylindre(3.0,1.5,5);			
 		
 	}
 
@@ -348,6 +407,14 @@ void keyboard(unsigned char key, int x, int y)
 
 		case 'W':
 			Wired_or_Shade = GLU_LINE;
+			break;
+
+		case 's':
+			Wired_or_Shade = GLU_SILHOUETTE;
+			break;
+
+		case 'p':
+			Wired_or_Shade = GLU_POINT;
 			break;
 
 
