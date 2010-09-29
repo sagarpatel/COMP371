@@ -129,6 +129,26 @@ void drawSphere(float Radius, GLint Slices, GLint Rings)
 
 }
 
+
+void drawBelly(void)
+{
+
+	//Draw Belly/Underside
+		//Wheat
+		//Orignal Code : 245-222-179
+			glColor3f(0.95703125, 0.8671875, 0.69921875);
+
+		glPushMatrix();
+		glTranslatef(0,-1.0,0);
+		drawSphere(3.0,50,25);
+		glPopMatrix();
+
+		//Return to Body Color
+
+		glColor3f(0.15625, 0.54296875, 0.236328125);
+	
+}
+
 void showReferenceAxis(void)
 						
 {
@@ -223,19 +243,7 @@ void display(void)
 
 		drawCylindre(3.0,1.5,5);
 
-		//Draw Belly/Underside
-		//Wheat
-		//Orignal Code : 245-222-179
-			glColor3f(0.95703125, 0.8671875, 0.69921875);
-
-		glPushMatrix();
-		glTranslatef(0,-1.0,0);
-		drawSphere(2.75,50,25);
-		glPopMatrix();
-
-		//Return to Body Color
-
-		glColor3f(0.15625, 0.54296875, 0.236328125);
+		drawBelly();
 
 		
 				
@@ -262,7 +270,9 @@ void display(void)
 
 		glRotatef(2,0,0,1);
 
-		drawCylindre(3.0,1.5,5);	
+		drawCylindre(3.0,1.5,5);
+		
+		drawBelly();	
 		
 	}
 
@@ -287,7 +297,9 @@ void display(void)
 
 		glRotatef(4,0,0,1);
 
-		drawCylindre(3.0,1.5,5);		
+		drawCylindre(3.0,1.5,5);
+		
+		drawBelly();		
 		
 	}
 
@@ -311,7 +323,9 @@ void display(void)
 
 		glRotatef(4,0,0,1);
 
-		drawCylindre(3.0,1.5,5);			
+		drawCylindre(3.0,1.5,5);
+		
+		drawBelly();			
 		
 	}
 
@@ -320,7 +334,9 @@ void display(void)
 
 		glTranslatef(0 , 0 , 1.5);
 
-		drawCylindre(3.0,1.5,5);			
+		drawCylindre(3.0,1.5,5);	
+		
+		drawBelly();	
 		
 	}
 
@@ -333,32 +349,62 @@ void display(void)
 		glRotatef(4,0,1,0);
 
 		glRotatef(4,1,0,0);
-	
-		drawCylindre(3.0,1.5,5);		
-		
-	}
 
-	for(int m =0; m<15; m++)
-	{
-
-		glTranslatef(0 , 0 , 1.5);
-
-		glRotatef(-10,1,1,0);
+		//Fix rotation for neck/head
+		glRotatef(5,0,0,1);
+		glRotatef(-1,0,1,0);
+	//	showReferenceAxis();
 
 		drawCylindre(3.0,1.5,5);	
 		
+		drawBelly();
+		
 	}
+
+	glRotatef(-17,0,0,1);
+
 
 	for(int m =0; m<15; m++)
 	{
 
 		glTranslatef(0 , 0 , 1.5);
 
-		glRotatef(10,1,1,0);
+		glRotatef(-10,1,0,0);
 
-		drawCylindre(3.0,1.5,5);			
+		drawCylindre(3.0,1.5,5);	
+
+		drawBelly();
 		
 	}
+
+	for(int m =0; m<14; m++)
+	{
+
+		glTranslatef(0 , 0 , 1.5);
+
+		glRotatef(15,1,0,0);
+
+		drawCylindre(3.0,1.5,5);	
+		
+		drawBelly();		
+		
+	}
+
+	glTranslatef(0 , 0 , 1.5);
+
+	glRotatef(-15,1,0,0);
+
+	drawCylindre(3.0,1.5,5);	
+		
+	drawBelly();
+
+	glTranslatef(0 , 0 , 1.5);
+
+	glRotatef(-15,1,0,0);
+
+	drawCylindre(3.0,1.5,5);	
+		
+	drawBelly();
 
 
 	drawCylindre(5.0,1.0,10);
