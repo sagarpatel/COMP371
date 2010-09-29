@@ -88,8 +88,8 @@ void init(void)
 void drawCylindre(float TopRadius, float BotRadius, float Height)
 {
 
-	int CylindreDetailRadius = 50;
-	int CylindreDetailHeight = 20;
+	int CylindreDetailRadius = 20;
+	int CylindreDetailHeight = 8;
 
 	GLUquadricObj* CylindrePointer;
 
@@ -107,6 +107,20 @@ void drawCylindre(float TopRadius, float BotRadius, float Height)
 
 }	
 
+
+void drawCone(float BaseRadius, float Height)
+{
+	drawCylindre(0,BaseRadius, Height);
+}
+
+void drawSpikes()
+{
+	//Transform Cones to make spikes on back of dragon
+
+	//drawCone()
+
+
+}
 
 
 void drawSphere(float Radius, GLint Slices, GLint Rings)
@@ -140,7 +154,7 @@ void drawBelly(void)
 
 		glPushMatrix();
 		glTranslatef(0,-1.0,0);
-		drawSphere(3.0,50,25);
+		drawSphere(3.0,10,10);
 		glPopMatrix();
 
 		//Return to Body Color
