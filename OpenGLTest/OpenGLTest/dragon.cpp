@@ -110,14 +110,28 @@ void drawCylindre(float TopRadius, float BotRadius, float Height)
 
 void drawCone(float BaseRadius, float Height)
 {
-	drawCylindre(0,BaseRadius, Height);
+	drawCylindre(BaseRadius,0, Height);
 }
 
 void drawSpikes()
 {
 	//Transform Cones to make spikes on back of dragon
 
-	//drawCone()
+
+	glPushMatrix();
+	glColor3f(0,0,1);
+	glRotatef(-90,1,0,0);
+
+	glTranslatef(0,-0.5,0);  
+	
+	drawCone(1,5);
+
+	glPopMatrix();
+
+		//Return to Body Color
+
+		glColor3f(0.15625, 0.54296875, 0.236328125);
+	
 
 
 }
@@ -259,8 +273,10 @@ void display(void)
 
 		drawBelly();
 
-		
-				
+		showReferenceAxis();
+
+		drawSpikes();
+						
 		
 	}
 
@@ -286,7 +302,9 @@ void display(void)
 
 		drawCylindre(3.0,1.5,5);
 		
-		drawBelly();	
+		drawBelly();
+		
+		drawSpikes();	
 		
 	}
 
@@ -313,7 +331,9 @@ void display(void)
 
 		drawCylindre(3.0,1.5,5);
 		
-		drawBelly();		
+		drawBelly();
+		
+		drawSpikes();		
 		
 	}
 
@@ -339,7 +359,9 @@ void display(void)
 
 		drawCylindre(3.0,1.5,5);
 		
-		drawBelly();			
+		drawBelly();
+
+		drawSpikes();			
 		
 	}
 
@@ -350,7 +372,9 @@ void display(void)
 
 		drawCylindre(3.0,1.5,5);	
 		
-		drawBelly();	
+		drawBelly();
+		
+		drawSpikes();	
 		
 	}
 
@@ -372,6 +396,8 @@ void display(void)
 		drawCylindre(3.0,1.5,5);	
 		
 		drawBelly();
+
+		drawSpikes();
 		
 	}
 
@@ -388,6 +414,8 @@ void display(void)
 		drawCylindre(3.0,1.5,5);	
 
 		drawBelly();
+
+		drawSpikes();
 		
 	}
 
@@ -400,7 +428,9 @@ void display(void)
 
 		drawCylindre(3.0,1.5,5);	
 		
-		drawBelly();		
+		drawBelly();
+		
+		drawSpikes();		
 		
 	}
 
@@ -412,6 +442,11 @@ void display(void)
 		
 	drawBelly();
 
+	drawSpikes();
+
+
+
+
 	glTranslatef(0 , 0 , 1.5);
 
 	glRotatef(-15,1,0,0);
@@ -419,6 +454,10 @@ void display(void)
 	drawCylindre(3.0,1.5,5);	
 		
 	drawBelly();
+
+	drawSpikes();
+
+
 
 
 	drawCylindre(5.0,1.0,10);
