@@ -62,11 +62,12 @@ void init(void)
 								// Change the current matrix mode to Model-View matrix.
 	glLoadIdentity();
 								
-
-		glClearColor (0.0, 0.0, 0.0, 0.0);
-
-
-	glClearColor (0.0, 0.0, 0.0, 0.0); 
+	//Background Color
+		//Cornflower Blue
+		//Original Code: 100-149-237
+	glClearColor (0.390625, 0.58203125, 0.92578125, 0.0);
+	
+	 
 	glEnable(GL_DEPTH_TEST);
 	glShadeModel (GL_SMOOTH);
 
@@ -75,13 +76,10 @@ void init(void)
 	glEnable(GL_LIGHTING);
 	glEnable(GL_LIGHT0);
 
-
-
 	// Allows color on models with lighting
 	glEnable(GL_COLOR_MATERIAL);
 	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
-
-
+	
 
 }
 
@@ -108,23 +106,48 @@ void drawCylindre(float TopRadius, float BotRadius, float Height)
 }	
 
 
+void drawCylindre(float TopRadius, float BotRadius, float Height, int CylindreDetailRadius,int CylindreDetailHeight)
+{
+
+	GLUquadricObj* CylindrePointer;
+
+			
+
+	CylindrePointer = gluNewQuadric();
+							
+	gluQuadricDrawStyle(CylindrePointer, Wired_or_Shade);
+
+	gluCylinder(CylindrePointer, TopRadius, BotRadius, Height, CylindreDetailRadius, CylindreDetailHeight);
+							
+	gluDeleteQuadric(CylindrePointer);
+							
+	
+
+}	
+
 void drawCone(float BaseRadius, float Height)
 {
-	drawCylindre(BaseRadius,0, Height);
+
+	drawCylindre(BaseRadius,0, Height,10,2);
 }
 
-void drawSpikes()
+void drawSpikes(float BaseRadius, float Height)
 {
 	//Transform Cones to make spikes on back of dragon
 
 
 	glPushMatrix();
-	glColor3f(0,0,1);
-	glRotatef(-90,1,0,0);
-
+	glColor3f(0,0,0);
+	glRotatef(-90,1,0,0); // Rotation to dragon's back
+		
 	glTranslatef(0,-0.5,0);  
 	
-	drawCone(1,5);
+	glRotatef(45,0,1,0); //Rotate to side anlge
+	drawCone(BaseRadius,Height);
+
+	glRotatef(-90,0,1,0);
+	drawCone(BaseRadius,Height);
+
 
 	glPopMatrix();
 
@@ -273,10 +296,17 @@ void display(void)
 
 		drawBelly();
 
-		showReferenceAxis();
+	//	showReferenceAxis();
 
-		drawSpikes();
-						
+		if(i<50)
+		{
+		drawSpikes(1,4);
+		}
+		if(i>=50)
+		{
+			
+			drawSpikes(1,4.5);
+		}				
 		
 	}
 
@@ -304,7 +334,7 @@ void display(void)
 		
 		drawBelly();
 		
-		drawSpikes();	
+		drawSpikes(1,4.7);	
 		
 	}
 
@@ -333,7 +363,7 @@ void display(void)
 		
 		drawBelly();
 		
-		drawSpikes();		
+		drawSpikes(1,4.6);		
 		
 	}
 
@@ -361,7 +391,7 @@ void display(void)
 		
 		drawBelly();
 
-		drawSpikes();			
+		drawSpikes(1,4.7);			
 		
 	}
 
@@ -374,7 +404,7 @@ void display(void)
 		
 		drawBelly();
 		
-		drawSpikes();	
+		drawSpikes(1,4.75);	
 		
 	}
 
@@ -397,7 +427,7 @@ void display(void)
 		
 		drawBelly();
 
-		drawSpikes();
+		drawSpikes(1,4.8);
 		
 	}
 
@@ -415,7 +445,7 @@ void display(void)
 
 		drawBelly();
 
-		drawSpikes();
+		drawSpikes(1,4.85);
 		
 	}
 
@@ -430,7 +460,7 @@ void display(void)
 		
 		drawBelly();
 		
-		drawSpikes();		
+		drawSpikes(1,5);		
 		
 	}
 
@@ -442,9 +472,6 @@ void display(void)
 		
 	drawBelly();
 
-	drawSpikes();
-
-
 
 
 	glTranslatef(0 , 0 , 1.5);
@@ -454,10 +481,6 @@ void display(void)
 	drawCylindre(3.0,1.5,5);	
 		
 	drawBelly();
-
-	drawSpikes();
-
-
 
 
 	drawCylindre(5.0,1.0,10);
