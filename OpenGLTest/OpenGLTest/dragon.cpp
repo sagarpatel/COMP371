@@ -65,8 +65,8 @@ void init(void)
 	//Background Color
 		//Cornflower Blue
 		//Original Code: 100-149-237
-	glClearColor (0.390625, 0.58203125, 0.92578125, 0.0);
-	
+	//glClearColor (0.390625, 0.58203125, 0.92578125, 0.0);
+	glClearColor(0,0,0,0);
 	 
 	glEnable(GL_DEPTH_TEST);
 	glShadeModel (GL_SMOOTH);
@@ -137,7 +137,21 @@ void drawSpikes(float BaseRadius, float Height)
 
 
 	glPushMatrix();
-	glColor3f(0,0,0);
+	//glColor3f(0,0,0); //Black spikes
+		
+		// Gold
+		// Original Code: 255-215-0
+		//glColor3f(0.99609375, 0.83984375, 0);
+	// Moded gold
+	//glColor3f(0.99609375, 0.83984375, 0.45);
+
+	// Dark Green
+	// Original Code: 0-100-0
+	//glColor3f(0.0, 0.390625, 0.0);
+
+	//Manually tweaked value
+	glColor3f(0,0.25,0.05);
+
 	glRotatef(-90,1,0,0); // Rotation to dragon's back
 		
 	glTranslatef(0,-0.5,0);  
