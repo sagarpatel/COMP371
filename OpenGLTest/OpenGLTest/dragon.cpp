@@ -152,11 +152,16 @@ void drawSpikes(float BaseRadius, float Height)
 	//Manually tweaked value
 	glColor3f(0,0.25,0.05);
 
+	glScalef(1,1,4);
+
 	glRotatef(-90,1,0,0); // Rotation to dragon's back
 		
 	glTranslatef(0,-0.5,0);  
 	
 	glRotatef(45,0,1,0); //Rotate to side anlge
+
+	
+
 	drawCone(BaseRadius,Height);
 
 	glRotatef(-90,0,1,0);
