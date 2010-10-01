@@ -86,8 +86,8 @@ void init(void)
 void drawCylindre(float TopRadius, float BotRadius, float Height)
 {
 
-	int CylindreDetailRadius = 20;
-	int CylindreDetailHeight = 8;
+	int CylindreDetailRadius = 16;
+	int CylindreDetailHeight = 6;
 
 	GLUquadricObj* CylindrePointer;
 
@@ -210,7 +210,7 @@ void drawBelly(void)
 
 		glPushMatrix();
 		glTranslatef(0,-1.0,0);
-		drawSphere(3.0,10,10);
+		drawSphere(3.0,15,15);
 		glPopMatrix();
 
 		//Return to Body Color
@@ -479,8 +479,10 @@ void display(void)
 		
 		drawBelly();
 		
-		drawSpikes(1,5);		
-		
+		if(m!=13)
+		{
+			drawSpikes(1,5);		
+		}
 	}
 
 	glTranslatef(0 , 0 , 1.5);
@@ -502,19 +504,41 @@ void display(void)
 	drawBelly();
 
 
-	drawCylindre(5.0,1.0,10);
+	drawCylindre(5,1.20,7);
 
 
+
+
+
+
+
+	//showReferenceAxis();
+
+	glColor3f(0.5,0,0);
+	glTranslatef(0,3,4);
+	
+
+	glPushMatrix();
+	glTranslatef(-2,0,0);
+	glRotatef(-40,0,1,0);
+	glScalef(1,0.4,0.5);
+	//showReferenceAxis();
+	drawSphere(1.5,10,10);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(2,0,0);
+	glRotatef(40,0,1,0);
+	glScalef(1,0.4,0.5);
+	//showReferenceAxis();
+	drawSphere(1.5,10,10);
+	glPopMatrix();
 
 
 
 	glPopMatrix();
 
 	
-	
-
-
-	//Sleep(5);
 	glutSwapBuffers();
 
 
