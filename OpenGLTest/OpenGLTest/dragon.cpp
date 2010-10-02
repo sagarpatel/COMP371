@@ -83,11 +83,33 @@ void init(void)
 
 }
 
+void showReferenceAxis(void)
+						
+{
+
+	 glBegin(GL_LINES);
+						// X axis red
+      glColor3f(1, 0, 0);
+      glVertex3f(0, 0, 0);
+      glVertex3f(10, 0, 0);
+						// Y axis green
+      glColor3f(0, 1, 0);
+      glVertex3f(0, 0, 0);
+      glVertex3f(0, 10, 0);
+						// Z axis blue
+      glColor3f(0, 0, 1);
+      glVertex3f(0, 0, 0);
+      glVertex3f(0, 0, 10);
+	  glEnd();
+	
+}
+
+
 void drawCylindre(float TopRadius, float BotRadius, float Height)
 {
 
-	int CylindreDetailRadius = 16;
-	int CylindreDetailHeight = 6;
+	int CylindreDetailRadius = 8;
+	int CylindreDetailHeight = 3;
 
 	GLUquadricObj* CylindrePointer;
 
@@ -174,7 +196,7 @@ void drawCylindre(float TopRadius, float BotRadius, float Height, int CylindreDe
 void drawCone(float BaseRadius, float Height)
 {
 
-	drawCylindre(BaseRadius,0, Height,10,2);
+	drawCylindre(BaseRadius,0, Height,8,2);
 }
 
 void drawSpikes(float BaseRadius, float Height)
@@ -265,70 +287,115 @@ void drawBelly(void)
 	
 }
 
-void showReferenceAxis(void)
-						
+void drawBelly(float Radius)
 {
 
-	 glBegin(GL_LINES);
-						// X axis red
-      glColor3f(1, 0, 0);
-      glVertex3f(0, 0, 0);
-      glVertex3f(10, 0, 0);
-						// Y axis green
-      glColor3f(0, 1, 0);
-      glVertex3f(0, 0, 0);
-      glVertex3f(0, 10, 0);
-						// Z axis blue
-      glColor3f(0, 0, 1);
-      glVertex3f(0, 0, 0);
-      glVertex3f(0, 0, 10);
-	  glEnd();
+	//Draw Belly/Underside
+		//Wheat
+		//Orignal Code : 245-222-179
+			glColor3f(0.95703125, 0.8671875, 0.69921875);
+
+		glPushMatrix();
+		glTranslatef(0,-1.0,0);
+		drawSphere(Radius,15,15);
+		glPopMatrix();
+
+		//Return to Body Color
+
+		glColor3f(0.15625, 0.54296875, 0.236328125);
 	
 }
 
-void display(void)
+void drawTail(void)
 {
 
-	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glColor3f(1.0, 1.0, 1.0);
-
-
-	glMatrixMode(GL_MODELVIEW);
-	glLoadIdentity();
-
-	cam_position[0] = cam_radius * sin(cam_phi) * sin(cam_theta);
-	cam_position[1] = cam_radius * cos(cam_phi);
-	cam_position[2] = cam_radius * sin(cam_phi) * cos(cam_theta);
-	
-	
-
-	gluLookAt(cam_position[0],cam_position[1],cam_position[2],
-			  cam_target[0], cam_target[1], cam_target[2],
-			  cam_up[0], cam_up[1], cam_up[2]);
-
-	showReferenceAxis();
-
-	// Orignal Color (hand tweaked)
-	//	glColor3f(0.15, .75, 0.5);
-
-	// Forest Green (http://www.tayloredmktg.com/rgb/)
-	// Original code : 34-139-34
-	//	glColor3f(0.1328125, 0.54296875, 0.1328125);
-
-	// Sea Green
-	// Original Code : 46-139-87
-	//	glColor3f(0.1796875, 0.54296875, 0.33984375);
-
-	//Average of Forest and Sea
-		glColor3f(0.15625, 0.54296875, 0.236328125);
 	
 
 	glPushMatrix();
 
-	//glTranslatef(0.0,0, -2.0);
-	glRotatef(90,0,1,0);
+	glTranslatef(0,0,1);
 
-	glRotatef(-90,1,0,0);
+	int height_increment;
+
+	for(int i = 0; i<60; i++)
+	{
+
+		//showReferenceAxis();
+
+		height_increment = i;
+
+		glTranslatef(0 , 0 , -1.5);
+		//glRotatef(-0.2*height_increment,-1,0,0);
+		
+		if (i <30)
+		{
+			glRotatef(4,1,0,0);
+
+			glRotatef(-0.5*height_increment,0,1,0);
+		}
+
+		if (i>=30 && i < 45)
+		{
+			glRotatef(4,0,1,0);
+			glRotatef(-9,1,0,0);
+			glRotatef(4,0,0,1);
+		}
+
+
+		if (i>=50)
+		{
+			glRotatef(4,0,0,1);
+			glRotatef(7,1,0,0);
+		}
+
+		drawSpikes(1,4);
+
+		if(i<57)
+		{
+			drawCylindre(3.0,1.5,5);
+		}
+
+		if (i<=42)
+		{
+			drawBelly();
+		}
+
+		if( i>42 && i<53)
+		{
+			drawBelly(3-0.01*i);
+
+		}
+
+		if(i>50)
+		{
+			glPushMatrix();
+
+			glTranslatef(0,4,5);
+			glScalef(1,-2,1);
+
+			drawSpikes(2,4.5);
+			glPopMatrix();
+
+		}
+
+		if(i>=57)
+		{
+			glPushMatrix();
+			glTranslatef(0,2,0);
+			glScalef(1.25,-1.25,1.25);			
+			drawSpikes(2,4);
+			glPopMatrix();
+		}
+	}
+
+	glPopMatrix();
+
+
+}
+
+void drawBody(void)
+{
+	
 
 	int height_increment;
 
@@ -550,6 +617,60 @@ void display(void)
 	drawBelly();
 
 
+
+
+}
+
+void display(void)
+{
+
+	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+	glColor3f(1.0, 1.0, 1.0);
+
+
+	glMatrixMode(GL_MODELVIEW);
+	glLoadIdentity();
+
+	cam_position[0] = cam_radius * sin(cam_phi) * sin(cam_theta);
+	cam_position[1] = cam_radius * cos(cam_phi);
+	cam_position[2] = cam_radius * sin(cam_phi) * cos(cam_theta);
+	
+	
+
+	gluLookAt(cam_position[0],cam_position[1],cam_position[2],
+			  cam_target[0], cam_target[1], cam_target[2],
+			  cam_up[0], cam_up[1], cam_up[2]);
+
+	showReferenceAxis();
+
+	// Orignal Color (hand tweaked)
+	//	glColor3f(0.15, .75, 0.5);
+
+	// Forest Green (http://www.tayloredmktg.com/rgb/)
+	// Original code : 34-139-34
+	//	glColor3f(0.1328125, 0.54296875, 0.1328125);
+
+	// Sea Green
+	// Original Code : 46-139-87
+	//	glColor3f(0.1796875, 0.54296875, 0.33984375);
+
+	//Average of Forest and Sea
+		glColor3f(0.15625, 0.54296875, 0.236328125);
+	
+
+	glPushMatrix();
+
+	//glTranslatef(0.0,0, -2.0);
+	glRotatef(90,0,1,0);
+
+	glRotatef(-90,1,0,0);
+
+	drawTail();
+
+	drawBody();
+
+	
+
 //Head Code
 
 	glPushMatrix();
@@ -599,7 +720,6 @@ void display(void)
 
 	glPopMatrix();
 
-	
 	glutSwapBuffers();
 
 
