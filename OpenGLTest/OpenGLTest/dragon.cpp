@@ -120,7 +120,53 @@ void drawCylindre(float TopRadius, float BotRadius, float Height, int CylindreDe
 	gluCylinder(CylindrePointer, TopRadius, BotRadius, Height, CylindreDetailRadius, CylindreDetailHeight);
 							
 	gluDeleteQuadric(CylindrePointer);
-							
+
+
+// int SLICES = CylindreDetailRadius;  
+//  int STACKS = CylindreDetailHeight;
+//  float SCALE_X =1 ;
+//  float SCALE_Y = 1;
+//  float SCALE_Z = 1;
+
+// 	  glEnable(GL_NORMALIZE);
+    
+//     //top of cylinder
+//     glBegin(GL_TRIANGLE_FAN);
+//         glNormal3f(0.0f, 0.0f, -1.0f);
+//         glVertex3f(0.0f, 0.0f, 0.0f);
+//         for (int i=0; i<=SLICES; ++i) {
+//             float x = SCALE_X * sin(i*2*M_PI/SLICES);
+//             float y = SCALE_Y * cos(i*2*M_PI/SLICES);
+//             glVertex3f(x, y, 0.0f);
+//         }
+//     glEnd();
+    
+//     //main part of cylinder
+//     for (int j=0; j<STACKS; ++j) {
+//         glBegin(GL_TRIANGLE_STRIP);
+//             for (int i=0; i<=SLICES; ++i) {
+//                 float x = SCALE_X * sin(i*2*M_PI/SLICES);
+//                 float y = SCALE_Y * cos(i*2*M_PI/SLICES);
+//                 float z = j * SCALE_Z / STACKS;
+//                 glNormal3f(x, y, 0.0f);
+//                 glVertex3f(x, y, z);
+//                  z = (j+1) * SCALE_Z / STACKS;
+//                 glVertex3f(x, y, z);
+//             }
+//         glEnd();
+//     }
+    
+//     //bottom of cylinder
+//     glBegin(GL_TRIANGLE_FAN);
+//         glNormal3f(0.0f, 0.0f, 1.0f);
+//         glVertex3f(0.0f, 0.0f, SCALE_Z);
+//         for (int i=0; i<=SLICES; ++i) 
+//         {
+//             float x = SCALE_X * sin(i*2*M_PI/SLICES);
+//             float y = SCALE_Y * cos(i*2*M_PI/SLICES);
+//             glVertex3f(x, y, SCALE_Z);
+//         }
+//     glEnd();					
 	
 
 }	
@@ -479,7 +525,7 @@ void display(void)
 		
 		drawBelly();
 		
-		if(m!=13)
+		if(m<12)
 		{
 			drawSpikes(1,5);		
 		}
@@ -504,18 +550,33 @@ void display(void)
 	drawBelly();
 
 
-	drawCylindre(5,1.20,7);
+//Head Code
+
+	glPushMatrix();
+
+	glTranslatef(0,0,-2);
+	drawCylindre(5,1.20,9.3,20,20);
+
+	glPopMatrix();
+
+//Mouth Code
+
+	glPushMatrix();
+	glTranslatef(0,0,5);
+	glRotatef(15,1,0,0);
+	//glColor3f(0,0,1);
+	glScalef(0.75,0.75,1);
+	drawSphere(3,20,20);
+	glPopMatrix();
 
 
 
-
-
-
+//Eyes code
 
 	//showReferenceAxis();
 
 	glColor3f(0.5,0,0);
-	glTranslatef(0,3,4);
+	glTranslatef(0,3,2);
 	
 
 	glPushMatrix();
