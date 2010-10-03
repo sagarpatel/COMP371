@@ -91,15 +91,15 @@ void showReferenceAxis(void)
 						// X axis red
       glColor3f(1, 0, 0);
       glVertex3f(0, 0, 0);
-      glVertex3f(10, 0, 0);
+      glVertex3f(20, 0, 0);
 						// Y axis green
       glColor3f(0, 1, 0);
       glVertex3f(0, 0, 0);
-      glVertex3f(0, 10, 0);
+      glVertex3f(0, 20, 0);
 						// Z axis blue
       glColor3f(0, 0, 1);
       glVertex3f(0, 0, 0);
-      glVertex3f(0, 0, 10);
+      glVertex3f(0, 0, 20);
 	  glEnd();
 	
 }
@@ -304,6 +304,78 @@ void drawBelly(float Radius)
 
 		glColor3f(0.15625, 0.54296875, 0.236328125);
 	
+}
+
+void drawLeftWing(void)
+{
+	glPushMatrix();
+
+	glTranslatef(0,2,0);
+
+//	drawCylindre(float TopRadius, float BotRadius, float Height, int CylindreDetailRadius,int CylindreDetailHeight)
+	
+//Orignal Wing code
+	glPushMatrix();
+	glRotatef(60,0,1,0);
+	glRotatef(-35,1,0,0);
+
+
+	//First part of wing, stuck to back of body
+	glPushMatrix();
+	glScalef(1,0.15,1);
+	drawCylindre(1, 3, 6, 5,3);
+	glPopMatrix();
+
+
+	//Second part of wing, widest
+
+	glTranslatef(0,0,5);
+	
+	glRotatef(15,0,1,0);
+	glRotatef(-25,1,0,0);
+	//glRotatef(180,0,0,1);
+	
+	glPushMatrix();
+	glScalef(1,0.15,1);
+	drawCylindre(3,5,7,5,3);
+	glPopMatrix();
+
+	//Last part of wing
+
+	
+	glTranslatef(0,0,7);
+
+	glRotatef(-25,1,0,0);
+	glScalef(1,0.15,1);
+	//showReferenceAxis();
+	drawCylindre(5,1,3,5,3);
+	
+	glPopMatrix();
+
+	glPopMatrix();
+
+
+
+}
+
+void drawWings()
+{
+	
+	//showReferenceAxis();
+
+	glColor3f(0,0.2,0);
+
+
+//Draw Left Wing
+	drawLeftWing();
+
+//Draw Right Wing
+	glScalef(-1,1,1); //Does mirror image
+	drawLeftWing();
+	
+
+
+
 }
 
 void drawTail(void)
@@ -566,6 +638,8 @@ void drawBody(void)
 	glRotatef(-17,0,0,1);
 
 
+
+
 	for(int m =0; m<15; m++)
 	{
 
@@ -578,6 +652,11 @@ void drawBody(void)
 		drawBelly();
 
 		drawSpikes(1,4.85);
+
+		if(m == 5)
+		{
+			drawWings();
+		}
 		
 	}
 
