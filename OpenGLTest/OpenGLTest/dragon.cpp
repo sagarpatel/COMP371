@@ -625,7 +625,6 @@ void display(void)
 {
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	glColor3f(1.0, 1.0, 1.0);
 
 
 	glMatrixMode(GL_MODELVIEW);
@@ -682,12 +681,14 @@ void display(void)
 
 //Mouth Code
 
+glColor3f(0, 0.4, 0);
+
 	glPushMatrix();
 	glTranslatef(0,0,5);
 	glRotatef(15,1,0,0);
 	//glColor3f(0,0,1);
 	glScalef(0.75,0.75,1);
-	drawSphere(3,20,20);
+	drawSphere(3.2,20,20);
 	glPopMatrix();
 
 
@@ -714,6 +715,32 @@ void display(void)
 	glScalef(1,0.4,0.5);
 	//showReferenceAxis();
 	drawSphere(1.5,10,10);
+	glPopMatrix();
+
+
+
+//Ears code
+
+	//showReferenceAxis();
+
+	glColor3f(0,0.1,0);
+	glTranslatef(0,-2,-3);
+	
+
+	glPushMatrix();
+	glTranslatef(-4,0,0);
+	glRotatef(-40,0,1,0);
+	glScalef(0.5,1,0.2);
+	//showReferenceAxis();
+	drawSphere(3,10,10);
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(4,0,0);
+	glRotatef(40,0,1,0);
+	glScalef(0.5,1,0.2);
+	//showReferenceAxis();
+	drawSphere(3,10,10);
 	glPopMatrix();
 
 
