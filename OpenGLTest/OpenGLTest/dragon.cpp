@@ -25,6 +25,8 @@ int h,w;
 
 int Wired_or_Shade = GLU_LINE;
 
+bool orthogonalFlag = false;
+
 
 void init(void) 
 {
@@ -38,9 +40,9 @@ void init(void)
 	cam_position[1] = 5;
 	cam_position[2] = -5;
 
-	// Point camera to origin
+	// Point camera to center of dragon
 	cam_target[0] = 0;
-	cam_target[1] = 0;
+	cam_target[1] = 20;
 	cam_target[2] = 0;
 
 	// Setting camera's Up vector
@@ -343,12 +345,12 @@ void drawLeftWing(void)
 	//Last part of wing
 
 	
-	glTranslatef(0,0,7);
+	glTranslatef(0,0,6.75);
 
 	glRotatef(-25,1,0,0);
 	glScalef(1,0.15,1);
 	//showReferenceAxis();
-	drawCylindre(5,1,3,5,3);
+	drawCylindre(5,1,4,5,3);
 	
 	glPopMatrix();
 
@@ -363,8 +365,9 @@ void drawWings()
 	
 	//showReferenceAxis();
 
-	glColor3f(0,0.2,0);
 
+	//glColor3f(0,0.2,0);
+glPushAttrib(GL_CURRENT_BIT);
 
 //Draw Left Wing
 	drawLeftWing();
@@ -373,7 +376,7 @@ void drawWings()
 	glScalef(-1,1,1); //Does mirror image
 	drawLeftWing();
 	
-
+glPopAttrib();
 
 
 }
@@ -381,7 +384,7 @@ void drawWings()
 void drawTail(void)
 {
 
-	
+	glPushAttrib(GL_CURRENT_BIT);
 
 	glPushMatrix();
 
@@ -462,9 +465,165 @@ void drawTail(void)
 
 	glPopMatrix();
 
+	glPopAttrib();
 
 }
 
+void drawRightArm(void)
+{
+
+	int	bicep_length = 8;
+	int forearm_length = 7;
+
+	glPushAttrib(GL_CURRENT_BIT);
+
+	glPushMatrix();
+	glRotatef(35,0,1,0);
+	drawCylindre(1,1,bicep_length);
+
+	glTranslatef(0,0,bicep_length);
+	
+
+	drawSphere(1.15,10,10);
+
+	glRotatef(130,0 ,1,0);
+	drawCylindre(1,1,forearm_length);
+
+	glTranslatef(0,0,forearm_length);
+
+//Draw hand
+	glPushMatrix();
+
+	//showReferenceAxis();
+	glScalef(1.1,1.1,1.5);
+	drawSphere(1.2,10,10);
+
+	glPopMatrix();
+
+//Draw fingers
+	
+	glScalef(1.15,1.15,1.15);
+
+	glColor3f(0,0,0);
+	
+	glTranslatef(0.15,0,0.1);
+
+	glPushMatrix();
+	glRotatef(60,0,1,0);
+	drawCylindre(1,0,2);
+	glPopMatrix();
+
+	glTranslatef(0,-0.4,0.5);
+	glRotatef(30,1,0,0);
+	drawCylindre(0.75,0,1.5);
+
+	glTranslatef(-0.5,0,0.2);
+	glRotatef(-30,0,1,0);
+	glTranslatef(0,0.2,-0.5);
+	drawCylindre(1,0,1.5);
+
+	glPopMatrix();
+	
+
+	glPopAttrib();
+
+}
+
+
+void drawArms()
+{
+
+	drawRightArm();
+	
+	glPushMatrix();
+
+	glScalef(-1,1,1);
+	drawRightArm();
+
+	glPopMatrix();
+
+}
+
+void drawLeftLeg()
+{
+	
+	int	bicep_length = 7;
+	int forearm_length = 5;
+
+	glPushAttrib(GL_CURRENT_BIT);
+
+	glPushMatrix();
+	glTranslatef(2,0,0);
+	glRotatef(111,0,1,0);
+	glRotatef(-45,0,0,1);
+	//showReferenceAxis();
+	drawCylindre(1,1,bicep_length);
+
+	glTranslatef(0,0,bicep_length);
+	
+
+	drawSphere(1.15,10,10);
+
+	glRotatef(100,0 ,1,0); // joint angle
+	drawCylindre(1,1,forearm_length);
+
+	glTranslatef(0,0,forearm_length);
+
+//Draw hand
+	glPushMatrix();
+
+	//showReferenceAxis();
+	glScalef(1.1,1.1,1.5);
+	drawSphere(1.2,10,10);
+
+	glPopMatrix();
+
+//Draw fingers
+	
+	glScalef(1.15,1.15,1.15);
+
+	glColor3f(0,0,0);
+	
+	glTranslatef(0.15,0,0.1);
+
+	glPushMatrix();
+	glRotatef(60,0,1,0);
+	drawCylindre(1,0,2);
+	glPopMatrix();
+
+	glTranslatef(0,-0.4,0.5);
+	glRotatef(30,1,0,0);
+	drawCylindre(0.75,0,1.5);
+
+	glTranslatef(-0.5,0,0.2);
+	glRotatef(-30,0,1,0);
+	glTranslatef(0,0.2,-0.5);
+	drawCylindre(1,0,1.5);
+
+	glPopMatrix();
+	
+
+	glPopAttrib();
+
+
+
+}
+
+void drawLegs()
+{
+
+	drawLeftLeg();
+
+	glPushMatrix();
+
+	glScalef(-1,1,1);
+
+	drawLeftLeg();
+
+	glPopMatrix();
+	
+
+}
 void drawBody(void)
 {
 	
@@ -473,6 +632,11 @@ void drawBody(void)
 
 	for(int i =0; i<100;i++)
 	{
+
+		if(i==1)
+		{
+			drawLegs();
+		}		
 
 		height_increment = i;
 
@@ -510,9 +674,13 @@ void drawBody(void)
 		{
 			
 			drawSpikes(1,4.5);
-		}				
+		}
+		
+				
 		
 	}
+
+
 
 
 
@@ -660,6 +828,8 @@ void drawBody(void)
 		
 	}
 
+	drawArms();
+
 	for(int m =0; m<14; m++)
 	{
 
@@ -693,11 +863,33 @@ void drawBody(void)
 
 	drawCylindre(3.0,1.5,5);	
 		
-	drawBelly();
+	//drawBelly();
 
 
 
 
+}
+
+void orthogonalStart(void) 
+{
+    glMatrixMode(GL_PROJECTION);
+    
+    glPushMatrix();
+    glLoadIdentity();
+    
+    gluOrtho2D(0, w, 0, h);
+    
+    glScalef(1, -1, 1);
+    glTranslatef(0, -h, -200);
+    
+    glMatrixMode(GL_MODELVIEW);
+}
+
+void orthogonalStop(void) 
+{
+    glMatrixMode(GL_PROJECTION);
+    glPopMatrix();
+    glMatrixMode(GL_MODELVIEW);
 }
 
 void display(void)
@@ -706,8 +898,17 @@ void display(void)
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 
-	glMatrixMode(GL_MODELVIEW);
+
+		glMatrixMode(GL_MODELVIEW);
+	
+
 	glLoadIdentity();
+
+	if(orthogonalFlag)
+	{
+		orthogonalStart();
+		
+	}
 
 	cam_position[0] = cam_radius * sin(cam_phi) * sin(cam_theta);
 	cam_position[1] = cam_radius * cos(cam_phi);
@@ -719,7 +920,7 @@ void display(void)
 			  cam_target[0], cam_target[1], cam_target[2],
 			  cam_up[0], cam_up[1], cam_up[2]);
 
-	showReferenceAxis();
+	//showReferenceAxis();
 
 	// Orignal Color (hand tweaked)
 	//	glColor3f(0.15, .75, 0.5);
@@ -746,6 +947,7 @@ void display(void)
 	drawTail();
 
 	drawBody();
+
 
 	
 
@@ -826,6 +1028,12 @@ glColor3f(0, 0.4, 0);
 
 	glPopMatrix();
 
+	if(orthogonalFlag)
+	{
+		orthogonalStop();
+		
+	}
+
 	glutSwapBuffers();
 
 
@@ -865,9 +1073,21 @@ void keyboard(unsigned char key, int x, int y)
 			Wired_or_Shade = GLU_SILHOUETTE;
 			break;
 
-		case 'p':
+		case 'S':
 			Wired_or_Shade = GLU_POINT;
 			break;
+		
+		case 'o':
+			orthogonalFlag = true;
+			break;
+		case 'O':
+			orthogonalFlag = true;
+
+		case 'p':
+			orthogonalFlag = false;
+			break;
+		case 'P':
+			orthogonalFlag = false;
 
 
 		case 27: // ESC key
