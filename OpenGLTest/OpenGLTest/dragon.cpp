@@ -7,6 +7,7 @@
 #include <windows.h>
 #include "glut.h"
 #include <math.h>
+#include <stdio.h>
 
 
 #define PI 3.14159265
@@ -36,13 +37,13 @@ void init(void)
 	// Setting cam position to origin
 	// It is irreleveant since radius has been set to 10,
 	// therefore, thses values will be recalculated later.
-	cam_position[0] = 5;
-	cam_position[1] = 5;
-	cam_position[2] = -5;
+	cam_position[0] = 15;
+	cam_position[1] = 15;
+	cam_position[2] = -15;
 
 	// Point camera to center of dragon
 	cam_target[0] = 0;
-	cam_target[1] = 20;
+	cam_target[1] = 30;
 	cam_target[2] = 0;
 
 	// Setting camera's Up vector
@@ -51,17 +52,17 @@ void init(void)
 	cam_up[1] = 1;
 	cam_up[2] = 0;
 
-	cam_phi = 18;//90.0 * (PI/180);
-	cam_theta = -15.0;
+	cam_phi = 0.69;
+	cam_theta = -3.99;
 
 	glMatrixMode(GL_PROJECTION);
-								// Set the current openGL matrix to GL_PROJECTION ie projection matrix.
+								
 	glLoadIdentity();
-								// Load identitiy values in the above.
+								
 	gluPerspective(90, (GLfloat)w/(GLfloat)h, 1.0, 200.0);
 
 	glMatrixMode(GL_MODELVIEW);	
-								// Change the current matrix mode to Model-View matrix.
+								
 	glLoadIdentity();
 								
 	//Background Color
@@ -880,7 +881,7 @@ void orthogonalStart(void)
     gluOrtho2D(0, w, 0, h);
     
     glScalef(1, -1, 1);
-    glTranslatef(0, -h, -200);
+    glTranslatef(0, -h, 0);
     
     glMatrixMode(GL_MODELVIEW);
 }
@@ -1053,11 +1054,11 @@ void keyboard(unsigned char key, int x, int y)
 	switch (key) 
 	{
 
-		case 'z':				// Move Camera forward.
+		case 'f':				// Move Camera forward.
 			cam_radius -= 0.5;
 			break;
 
-		case 'Z' :				// Move Camera backward.
+		case 'b' :				// Move Camera backward.
 			cam_radius += 0.5;
 			break;
 
@@ -1088,6 +1089,21 @@ void keyboard(unsigned char key, int x, int y)
 			break;
 		case 'P':
 			orthogonalFlag = false;
+			break;
+
+		case 'c':
+			cam_radius = 100;
+			cam_phi = 0.69;
+			cam_theta = -3.99;
+		
+		break;
+
+		case 'C':	
+			cam_radius = 100;
+			cam_phi = 0.69;
+			cam_theta = -3.99;
+		
+		break;
 
 
 		case 27: // ESC key
@@ -1107,6 +1123,8 @@ void specialCallbackProc (int key, int x, int y)
 		
 		case GLUT_KEY_LEFT:		// Rotate Camera in an anticlockwise direction about the Y axis of the At (center) point.
 			cam_theta -= 1.0 * (PI/180);
+			
+
 			break;
 
 		case GLUT_KEY_RIGHT:	// Rotate Camera in an clockwise direction about the Y axis of the At (center) point.
