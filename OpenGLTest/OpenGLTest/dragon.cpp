@@ -4,6 +4,10 @@
 // This code uses parts of pilotView.c sample provided in the Lab.
 // This usage is mainly limited to camera fucntions.
 
+// Texture code from http://nehe.gamedev.net/data/lessons/lesson.asp?lesson=06
+
+
+
 #include <windows.h>
 #include "glut.h"
 #include <math.h>
@@ -106,6 +110,66 @@ void showReferenceAxis(void)
 	  glEnd();
 	
 }
+
+
+
+AUX_RGBImageRec LoadBMP(char *Filename)
+{
+	FILE *File=NULL;
+	if (!Filename)
+	{
+		return NULL;
+	}
+
+	File=fopen(Filename,"r");
+
+	if (File)
+	{
+		fclose(File);
+		return auxDIBImageLoad(Filename);
+	}
+
+	return NULL;
+}
+
+void LoadTextures(void)
+{
+	
+	AUX_RGBImageRec *TextureArray[1];
+
+	memset(TextureImage,0,sizeof(void *)*1);
+
+	TextureImage[0]=LoadBMP("GroundTex.bmp")
+
+	// -> points the size of image,H and W
+	glTexImage2D(GL_TEXTURE_2D, 0, 3, TextureImage[0]->256, TextureImage[0]->256, 0, GL_RGB, GL_UNSIGNED_BYTE, TextureImage[0]->data);
+
+	// Linear filtering
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);
+
+
+	if (TextureImage[0])							// If Texture Exists
+	{
+		if (TextureImage[0]->data)					// If Texture Image Exists
+		{
+			free(TextureImage[0]->data);				// Free The Texture Image Memory
+		}
+
+		free(TextureImage[0]);						// Free The Image Structure
+	}
+
+}
+
+
+
+
+
+
+
+
+
+
 
 
 void drawCylindre(float TopRadius, float BotRadius, float Height)

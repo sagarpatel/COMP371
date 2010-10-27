@@ -12,6 +12,9 @@ class DragonModel : public QuadricObjects
 {
 public:
 
+	float TransformMatrixArray[60][16];
+
+
 	
 
 	DragonModel(int *wired_or_shade) : QuadricObjects()
@@ -254,6 +257,13 @@ public:
 				glRotatef(7,1,0,0);
 			}
 
+			// Transformations for main tail end here
+
+			// Save current matric into seperate array
+
+			glGetFloatv(GL_MODELVIEW_MATRIX , TransformMatrixArray[60-i]);
+			//printf("%f \n", TransformMatrixArray[1][1]);
+
 			drawSpikes(1,4);
 
 			if(i<57)
@@ -300,6 +310,7 @@ public:
 
 	}
 
+	
 	void drawRightArm(void)
 	{
 
@@ -785,18 +796,161 @@ public:
 	}
 
 
+	void drawSegment(void)
+	{
+		//	showReferenceAxis();
+
+		drawCylindre(3.0,1.5,5);
+		drawBelly();
+		drawSpikes(1,4);
+
+		
+	}
+
+	void printMatrix(int row)
+	{
+		for(int i = 0;i<16;i++)
+		{
+			if(i%4==0)
+			{
+				printf("\n");
+			}
+
+			printf("%f  ",TransformMatrixArray[row][i]);
+			
+			
+		}
+		printf("\n");
+
+
+	}
+
+	void generateTail(void)
+	{
+
+		glPushAttrib(GL_CURRENT_BIT);
+
+		glPushMatrix();
+
+
+		glRotatef(90,0,1,0);
+		glRotatef(-90,1,0,0);
+
+
+		glTranslatef(0,0,1);
+
+		int height_increment;
+
+		for(int i = 0; i<=60; i++)
+		{
+
+			//showReferenceAxis();
+
+			height_increment = i;
+
+			glTranslatef(0 , 0 , -1.5);
+			//glRotatef(-0.2*height_increment,-1,0,0);
+			
+			if (i <30)
+			{
+				glRotatef(4,1,0,0);
+
+				glRotatef(-0.5*height_increment,0,1,0);
+			}
+
+			if (i>=30 && i < 45)
+			{
+				glRotatef(4,0,1,0);
+				glRotatef(-9,1,0,0);
+				glRotatef(4,0,0,1);
+			}
+
+
+			if (i>=50)
+			{
+				glRotatef(4,0,0,1);
+				glRotatef(7,1,0,0);
+			}
+
+			// Transformations for main tail end here
+
+			// Save current matric into seperate array
+
+			glGetFloatv(GL_MODELVIEW_MATRIX , TransformMatrixArray[i]);
+			//printf("%f \n", TransformMatrixArray[1][1]);
+		}
+		glPopMatrix();
+
+		glPopAttrib();
+
+	}
+
+	void animateDragon(void)
+	{
+
+		//printMatrix(0);
+	
+		//Move up values
+
+		for(int i=60; i>0; i--)
+		{
+			if(i==0)
+			{
+				printf("oh noes");
+			}
+
+			// if i==0, means transfering first
+			for(int j=0; j<16; j++)
+			{
+						
+				TransformMatrixArray[i][j] = TransformMatrixArray[i-1][j];
+				//printf("%f \n",TransformMatrixArray[i][j]);
+			}
+
+		}
+
+
+	// Fix value of first element to reflect transformation
+
+		//printMatrix(0);
+
+		//glMatrixMode(GL_MODELVIEW);
+
+		glPushMatrix();
+
+
+
+		glLoadMatrixf(TransformMatrixArray[0]);
+		
+
+		//Transformations to the first coordinate
+		glRotatef(5,0,1,1);
+		glTranslatef(0,0,0.5);
+		glScalef(1,1,1);
+		//Dumped transformed into first position
+		glGetFloatv(GL_MODELVIEW_MATRIX , TransformMatrixArray[0]);
+
+		glPopMatrix();
+
+		//printMatrix(0);
+
+
+
+	}
+
+
 	void drawDragon(void)
 	{
 		
 
-		//showReferenceAxis();
+		showReferenceAxis();
 
 		// Orignal Color (hand tweaked)
 		//	glColor3f(0.15, .75, 0.5);
 
 		// Forest Green (http://www.tayloredmktg.com/rgb/)
 		// Original code : 34-139-34
-		//	glColor3f(0.1328125, 0.54296875, 0.1328125);
+			glColor3f(0.1328125, 0.54296875, 0.1328125);
 
 		// Sea Green
 		// Original Code : 46-139-87
@@ -813,11 +967,59 @@ public:
 
 		glRotatef(-90,1,0,0);
 
-		drawTail();
+//		 drawTail();
 
-		drawBody();
+		// drawBody();
 
-		drawHead();
+		// drawHead();
+
+
+		glPopMatrix();
+
+
+// TEsting array load
+
+//Cannot leave genreate tail here, or else it reloads orignal positoin every frame
+// Moving generate tail to init() in main
+//	generateTail();
+
+
+		glPushMatrix();
+
+		//glColor3f(0,0,1);
+
+//	showReferenceAxis();
+
+		for(int i=0; i<60; i++)
+		{
+			glPushMatrix();
+
+			//printMatrix(0);
+
+			//animateDragon();
+
+		//	glMatrixMode(GL_MODELVIEW_MATRIX);
+
+		//	glLoadMatrixf( TransformMatrixArray[i] ); //Loading makes it always at the same place relative to eye
+
+			glMultMatrixf(TransformMatrixArray[i]);
+
+			if(i==0)
+			{
+				printMatrix(0);
+			}
+
+			//glTranslatef(0,4,0);
+			
+			//printMatrix(i);
+
+//			showReferenceAxis();
+			drawSegment();
+
+			glPopMatrix();
+
+		}
+
 
 
 		glPopMatrix();

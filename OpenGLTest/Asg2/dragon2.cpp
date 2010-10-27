@@ -81,14 +81,17 @@ int main(int argc, char** argv)
 void init(void) 
 {
 
+	dragonmodel.generateTail();
+
+	
 	cam_radius = 100;
 
 	// Setting cam position to origin
 	// It is irreleveant since radius has been set to 10,
 	// therefore, thses values will be recalculated later.
-	cam_position[0] = 15;
-	cam_position[1] = 15;
-	cam_position[2] = -15;
+	cam_position[0] = 30;
+	cam_position[1] = 30;
+	cam_position[2] = 30;
 
 	// Point camera to center of dragon
 	cam_target[0] = 0;
@@ -132,6 +135,7 @@ void init(void)
 	glEnable(GL_COLOR_MATERIAL);
 	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
 	
+	//dragonmodel.generateTail();
 
 }
 
@@ -189,10 +193,9 @@ void display(void)
 			  cam_up[0], cam_up[1], cam_up[2]);
 
 
-
+	
 	dragonmodel.drawDragon();
-
-
+    
 
 	if(orthogonalFlag)
 	{
@@ -218,6 +221,10 @@ void keyboard(unsigned char key, int x, int y)
 {
 	switch (key) 
 	{
+
+		case 'a':
+			dragonmodel.animateDragon();
+			break;
 
 		case 'f':				// Move Camera forward.
 			cam_radius -= 0.5;
