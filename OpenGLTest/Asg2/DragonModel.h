@@ -7,12 +7,17 @@
 #include "QuadricObjects.h"
  
 
+const int segments = 285;
 
 class DragonModel : public QuadricObjects
 {
 public:
 
-	float TransformMatrixArray[60][16];
+	// 284 in main
+	// 61 in tail
+	// total of 345
+	
+	float TransformMatrixArray[segments-1][16];
 
 
 	
@@ -21,6 +26,7 @@ public:
 	{
 		// Initiliazation Code Here
 		SetWoS(wired_or_shade);
+
 
 	}
 
@@ -796,14 +802,43 @@ public:
 	}
 
 
-	void drawSegment(void)
+
+//284 segments
+
+	void drawSegment(int counter)
 	{
 		//	showReferenceAxis();
 
-		drawCylindre(3.0,1.5,5);
-		drawBelly();
-		drawSpikes(1,4);
-
+		if(counter%5 == 0)
+		{
+			drawCylindre(3.0,1.5,5);
+			drawBelly();
+			drawSpikes(1,4);
+		}
+		if(counter%5 == 1)
+		{
+			drawCylindre(3.0,1.5,5);
+			drawBelly();
+			drawSpikes(1,4.1);
+		}
+		if(counter%5 == 2)
+		{
+			drawCylindre(3.0,1.5,5);
+			drawBelly();
+			drawSpikes(1,4.2);
+		}
+		if(counter%5 == 3)
+		{
+			drawCylindre(3.0,1.5,5);
+			drawBelly();
+			drawSpikes(1,4.3);
+		}
+		if(counter%5 == 4)
+		{
+			drawCylindre(3.0,1.5,5);
+			drawBelly();
+			drawSpikes(1,4.4);
+		}
 		
 	}
 
@@ -825,6 +860,296 @@ public:
 
 	}
 
+
+	void generateBody(void)
+	{
+
+		glPushAttrib(GL_CURRENT_BIT);
+
+		glPushMatrix();
+
+
+		glRotatef(90,0,1,0);
+		glRotatef(-90,1,0,0);
+		
+
+		int height_increment;
+
+		for(int i =0; i<segments;i++)
+		{
+
+			if(i==1)
+			{
+				//drawLegs();
+			}
+			
+			if(i>1 && i<=20)
+			{
+				height_increment = i;
+				glTranslatef(0 , 0 , 1.5);
+				glRotatef(-0.2*height_increment,1,0,0);
+				glRotatef(2,0,1,0);
+				glRotatef(2,0,0,1);
+			}		
+
+			
+
+			if (i>20 && i<=40)
+			{
+				height_increment = 20;
+				glTranslatef(0 , 0 , 1.5);
+				glRotatef(-0.2*height_increment,1,0,0);
+				glRotatef(2,0,1,0);
+				glRotatef(2,0,0,1);
+			}
+			if (i>40 && i<=100)
+			{
+				height_increment = 40;
+				glTranslatef(0 , 0 , 1.5);
+				glRotatef(-0.2*height_increment,1,0,0);
+				glRotatef(2,0,1,0);
+				glRotatef(2,0,0,1);
+			}
+
+			// if (i>100 && i<=120)
+			// {
+			// 	height_increment = 10;
+			// }
+
+		
+			
+
+			// drawCylindre(3.0,1.5,5);
+
+			// drawBelly();
+
+		//	showReferenceAxis();
+
+			if(i<50)
+			{
+			//	drawSpikes(1,4);
+			}
+			if(i>=50)
+			{
+				
+			//	drawSpikes(1,4.5);
+			}
+			
+			
+			
+	
+		// for(int j =0; j<50; j++)
+		// {
+
+	//		height_increment = j;
+
+			if(i>100 && i<=120)
+			{
+				height_increment = i-100;
+				glTranslatef(0 , 0 , 1.5);
+				glRotatef(0.235*height_increment,1,0,0);
+				glRotatef(2,0,1,0);
+				glRotatef(2,0,0,1);
+
+			}
+
+			if (i>120 && i<150)
+			{
+				height_increment = 20;
+				glTranslatef(0 , 0 , 1.5);
+				glRotatef(0.235*height_increment,1,0,0);
+				glRotatef(2,0,1,0);
+				glRotatef(2,0,0,1);
+			}
+		
+	
+			// drawCylindre(3.0,1.5,5);			
+			// drawBelly();
+			// drawSpikes(1,4.7);	
+			
+		//}
+		
+
+//150
+		// for(int k =0; k<50; k++)
+		// {
+
+			if(i>=150 && i<=160)
+			{
+				height_increment = i-150;
+				glTranslatef(0 , 0 , 1.5);
+				glRotatef(0.2*height_increment,1,0,0);
+				glRotatef(2,0,1,0);
+				glRotatef(4,0,0,1);
+			}
+
+			if (i>160 && i<200)
+			{
+				height_increment = 40;
+				glTranslatef(0 , 0 , 1.5);
+				glRotatef(0.2*height_increment,1,0,0);
+				glRotatef(2,0,1,0);
+				glRotatef(4,0,0,1);
+			}
+
+			// drawCylindre(3.0,1.5,5);
+			// drawBelly();
+			// drawSpikes(1,4.6);		
+			
+
+		
+
+//200
+		// for(int l =0; l<30; l++)
+		// {
+
+			if(i>=200 && i ==201)
+			{
+				height_increment = i-200;
+				glTranslatef(0 , 0 , 1.5);
+				glRotatef(-0.2*height_increment,1,0,0);
+				//glRotatef(2,0,1,0);
+				glRotatef(4,0,0,1);
+			}
+
+			if (i>201 && i<230)
+			{
+				height_increment = 40;
+				glTranslatef(0 , 0 , 1.5);
+				glRotatef(-0.2*height_increment,1,0,0);
+				//glRotatef(2,0,1,0);
+				glRotatef(4,0,0,1);
+			}
+
+
+			// drawCylindre(3.0,1.5,5);			
+			// drawBelly();
+			// drawSpikes(1,4.7);			
+			
+			
+		// }
+
+		// for(int m =0; m<10; m++)
+		// {
+
+			if(i>=230 && i <241)
+			{
+				glTranslatef(0 , 0 , 1.5);
+			}
+			// drawCylindre(3.0,1.5,5);	
+			// drawBelly();
+			// drawSpikes(1,4.75);	
+			
+	//	}
+
+//240
+		// for(int n =0; n<15; n++)
+		// {
+
+			if(i>=241 && i<255)
+			{
+				glTranslatef(0 , 0 , 1.5);
+				
+				glRotatef(4,1,0,0);//x
+				glRotatef(4.5,0,1,0);//y
+				glRotatef(3.5,0,0,1);//z
+				//Fix rotation for neck/head
+				// glRotatef(5,0,0,1);
+				// glRotatef(-1,0,1,0);
+				// //Adjustment rotation, used to be done in one shot
+				// glRotatef(-2,0,0,1);
+			}
+			
+			
+		//	showReferenceAxis();
+
+			// drawCylindre(3.0,1.5,5);	
+			
+			// drawBelly();
+
+			// drawSpikes(1,4.8);
+			
+//		}
+
+		///Adjustment rotation
+		//glRotatef(-17,0,0,1);
+
+//255
+
+
+		// for(int m =0; m<15; m++)
+		// {
+
+			if(i>=255 && i<270)
+			{
+				glTranslatef(0 , 0 , 1.5);
+				glRotatef(-10,1,0,0);
+			}
+
+			
+			// drawCylindre(3.0,1.5,5);	
+
+			// drawBelly();
+
+			// drawSpikes(1,4.85);
+
+			// if(m == 5)
+			// {
+			// //	drawWings();
+			// }
+			
+		//}
+
+		//drawArms();
+
+		// for(int m =0; m<14; m++)
+		// {
+
+			if(i>=270 && i<284)
+			{
+				glTranslatef(0 , 0 , 1.5);
+				glRotatef(15,1,0,0);
+			}
+			// drawCylindre(3.0,1.5,5);	
+			
+			// drawBelly();
+			
+			// if(m<12)
+			// {
+			// //	drawSpikes(1,5);		
+			// }
+		//}
+
+		if(i==284)
+		{
+			glTranslatef(0 , 0 , 1.5);
+			glRotatef(-15,1,0,0);
+		}
+		// drawCylindre(3.0,1.5,5);	
+			
+		// drawBelly();
+
+
+		if(i==285)
+		{
+			glTranslatef(0 , 0 , 1.5);
+			glRotatef(-15,1,0,0);
+		}
+		//drawCylindre(3.0,1.5,5);	
+			
+		//drawBelly();
+
+		glGetFloatv(GL_MODELVIEW_MATRIX , TransformMatrixArray[segments - 1 -i]);			
+	}
+		glPopMatrix();
+
+		glPopAttrib();
+		
+	 
+	}
+
+
+
 	void generateTail(void)
 	{
 
@@ -841,7 +1166,7 @@ public:
 
 		int height_increment;
 
-		for(int i = 0; i<=60; i++)
+		for(int i = 0; i<=segments; i++)
 		{
 
 			//showReferenceAxis();
@@ -892,7 +1217,7 @@ public:
 	
 		//Move up values
 
-		for(int i=60; i>0; i--)
+		for(int i=segments; i>0; i--)
 		{
 			if(i==0)
 			{
@@ -925,7 +1250,7 @@ public:
 
 		//Transformations to the first coordinate
 		glRotatef(5,0,1,1);
-		glTranslatef(0,0,0.5);
+		glTranslatef(0,0,1.5);
 		glScalef(1,1,1);
 		//Dumped transformed into first position
 		glGetFloatv(GL_MODELVIEW_MATRIX , TransformMatrixArray[0]);
@@ -990,7 +1315,7 @@ public:
 
 //	showReferenceAxis();
 
-		for(int i=0; i<60; i++)
+		for(int i=0; i<segments; i++)
 		{
 			glPushMatrix();
 
@@ -1004,9 +1329,9 @@ public:
 
 			glMultMatrixf(TransformMatrixArray[i]);
 
-			if(i==0)
+			if(i==75)
 			{
-				printMatrix(0);
+				printMatrix(61);
 			}
 
 			//glTranslatef(0,4,0);
@@ -1014,7 +1339,7 @@ public:
 			//printMatrix(i);
 
 //			showReferenceAxis();
-			drawSegment();
+			drawSegment(i);
 
 			glPopMatrix();
 

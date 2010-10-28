@@ -81,8 +81,8 @@ int main(int argc, char** argv)
 void init(void) 
 {
 
-	dragonmodel.generateTail();
-
+	//dragonmodel.generateTail();
+	dragonmodel.generateBody();
 	
 	cam_radius = 100;
 
