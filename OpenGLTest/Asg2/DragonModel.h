@@ -7,15 +7,15 @@
 #include "QuadricObjects.h"
  
 
-const int segments = 285;
+const int segments = 346;
 
 class DragonModel : public QuadricObjects
 {
 public:
 
-	// 284 in main
+	// 285 in main
 	// 61 in tail
-	// total of 345
+	// total of 346
 	
 	float TransformMatrixArray[segments-1][16];
 
@@ -477,6 +477,10 @@ public:
 	void drawHead(void)
 	{
 			
+		
+		glPushMatrix();
+
+		glTranslatef(0,0,3);
 
 	//Head Code
 
@@ -552,6 +556,7 @@ public:
 		glPopMatrix();
 
 
+		glPopMatrix();
 
 	}
 
@@ -875,7 +880,7 @@ public:
 
 		int height_increment;
 
-		for(int i =0; i<segments;i++)
+		for(int i =0; i<285;i++)
 		{
 
 			if(i==1)
@@ -911,20 +916,7 @@ public:
 				glRotatef(2,0,0,1);
 			}
 
-			// if (i>100 && i<=120)
-			// {
-			// 	height_increment = 10;
-			// }
-
 		
-			
-
-			// drawCylindre(3.0,1.5,5);
-
-			// drawBelly();
-
-		//	showReferenceAxis();
-
 			if(i<50)
 			{
 			//	drawSpikes(1,4);
@@ -936,13 +928,6 @@ public:
 			}
 			
 			
-			
-	
-		// for(int j =0; j<50; j++)
-		// {
-
-	//		height_increment = j;
-
 			if(i>100 && i<=120)
 			{
 				height_increment = i-100;
@@ -962,17 +947,6 @@ public:
 				glRotatef(2,0,0,1);
 			}
 		
-	
-			// drawCylindre(3.0,1.5,5);			
-			// drawBelly();
-			// drawSpikes(1,4.7);	
-			
-		//}
-		
-
-//150
-		// for(int k =0; k<50; k++)
-		// {
 
 			if(i>=150 && i<=160)
 			{
@@ -992,16 +966,6 @@ public:
 				glRotatef(4,0,0,1);
 			}
 
-			// drawCylindre(3.0,1.5,5);
-			// drawBelly();
-			// drawSpikes(1,4.6);		
-			
-
-		
-
-//200
-		// for(int l =0; l<30; l++)
-		// {
 
 			if(i>=200 && i ==201)
 			{
@@ -1022,29 +986,11 @@ public:
 			}
 
 
-			// drawCylindre(3.0,1.5,5);			
-			// drawBelly();
-			// drawSpikes(1,4.7);			
-			
-			
-		// }
-
-		// for(int m =0; m<10; m++)
-		// {
-
 			if(i>=230 && i <241)
 			{
 				glTranslatef(0 , 0 , 1.5);
 			}
-			// drawCylindre(3.0,1.5,5);	
-			// drawBelly();
-			// drawSpikes(1,4.75);	
-			
-	//	}
 
-//240
-		// for(int n =0; n<15; n++)
-		// {
 
 			if(i>=241 && i<255)
 			{
@@ -1053,32 +999,10 @@ public:
 				glRotatef(4,1,0,0);//x
 				glRotatef(4.5,0,1,0);//y
 				glRotatef(3.5,0,0,1);//z
-				//Fix rotation for neck/head
-				// glRotatef(5,0,0,1);
-				// glRotatef(-1,0,1,0);
-				// //Adjustment rotation, used to be done in one shot
-				// glRotatef(-2,0,0,1);
 			}
 			
-			
-		//	showReferenceAxis();
-
-			// drawCylindre(3.0,1.5,5);	
-			
-			// drawBelly();
-
-			// drawSpikes(1,4.8);
-			
-//		}
-
-		///Adjustment rotation
-		//glRotatef(-17,0,0,1);
 
 //255
-
-
-		// for(int m =0; m<15; m++)
-		// {
 
 			if(i>=255 && i<270)
 			{
@@ -1086,63 +1010,27 @@ public:
 				glRotatef(-10,1,0,0);
 			}
 
-			
-			// drawCylindre(3.0,1.5,5);	
-
-			// drawBelly();
-
-			// drawSpikes(1,4.85);
-
-			// if(m == 5)
-			// {
-			// //	drawWings();
-			// }
-			
-		//}
-
-		//drawArms();
-
-		// for(int m =0; m<14; m++)
-		// {
 
 			if(i>=270 && i<284)
 			{
 				glTranslatef(0 , 0 , 1.5);
 				glRotatef(15,1,0,0);
 			}
-			// drawCylindre(3.0,1.5,5);	
-			
-			// drawBelly();
-			
-			// if(m<12)
-			// {
-			// //	drawSpikes(1,5);		
-			// }
-		//}
+
 
 		if(i==284)
 		{
 			glTranslatef(0 , 0 , 1.5);
 			glRotatef(-15,1,0,0);
 		}
-		// drawCylindre(3.0,1.5,5);	
-			
-		// drawBelly();
 
 
-		if(i==285)
-		{
-			glTranslatef(0 , 0 , 1.5);
-			glRotatef(-15,1,0,0);
-		}
-		//drawCylindre(3.0,1.5,5);	
-			
-		//drawBelly();
-
-		glGetFloatv(GL_MODELVIEW_MATRIX , TransformMatrixArray[segments - 1 -i]);			
-	}
+	
+		glGetFloatv(GL_MODELVIEW_MATRIX , TransformMatrixArray[segments - 1 -i-61]);			
+	 
+	  }
+		
 		glPopMatrix();
-
 		glPopAttrib();
 		
 	 
@@ -1157,6 +1045,7 @@ public:
 
 		glPushMatrix();
 
+		showReferenceAxis();
 
 		glRotatef(90,0,1,0);
 		glRotatef(-90,1,0,0);
@@ -1166,42 +1055,49 @@ public:
 
 		int height_increment;
 
-		for(int i = 0; i<=segments; i++)
+		for(int i = 285; i<=segments; i++)
 		{
 
-			//showReferenceAxis();
+			
 
-			height_increment = i;
+		//	printf("%d \n",i);
+			
+
+			height_increment = i - 285;
 
 			glTranslatef(0 , 0 , -1.5);
 			//glRotatef(-0.2*height_increment,-1,0,0);
 			
-			if (i <30)
+			if (i <30+285)
 			{
 				glRotatef(4,1,0,0);
-
 				glRotatef(-0.5*height_increment,0,1,0);
+				
 			}
 
-			if (i>=30 && i < 45)
+			if (i>=30+285 && i < 45+285)
 			{
 				glRotatef(4,0,1,0);
 				glRotatef(-9,1,0,0);
 				glRotatef(4,0,0,1);
+
 			}
 
 
-			if (i>=50)
+			if (i>=45+285)
 			{
 				glRotatef(4,0,0,1);
 				glRotatef(7,1,0,0);
+
 			}
 
 			// Transformations for main tail end here
 
 			// Save current matric into seperate array
 
-			glGetFloatv(GL_MODELVIEW_MATRIX , TransformMatrixArray[i]);
+		glGetFloatv(GL_MODELVIEW_MATRIX , TransformMatrixArray[i]);
+
+		printMatrix(i);
 			//printf("%f \n", TransformMatrixArray[1][1]);
 		}
 		glPopMatrix();
@@ -1268,6 +1164,7 @@ public:
 	{
 		
 
+
 		showReferenceAxis();
 
 		// Orignal Color (hand tweaked)
@@ -1283,71 +1180,30 @@ public:
 
 		//Average of Forest and Sea
 	//		glColor3f(0.15625, 0.54296875, 0.236328125);
+
 		
-
-		glPushMatrix();
-
-		//glTranslatef(0.0,0, -2.0);
-		glRotatef(90,0,1,0);
-
-		glRotatef(-90,1,0,0);
-
-//		 drawTail();
-
-		// drawBody();
-
-		// drawHead();
-
-
-		glPopMatrix();
-
-
-// TEsting array load
-
-//Cannot leave genreate tail here, or else it reloads orignal positoin every frame
-// Moving generate tail to init() in main
-//	generateTail();
-
-
-		glPushMatrix();
-
-		//glColor3f(0,0,1);
-
-//	showReferenceAxis();
 
 		for(int i=0; i<segments; i++)
 		{
 			glPushMatrix();
 
-			//printMatrix(0);
-
-			//animateDragon();
-
-		//	glMatrixMode(GL_MODELVIEW_MATRIX);
 
 		//	glLoadMatrixf( TransformMatrixArray[i] ); //Loading makes it always at the same place relative to eye
 
 			glMultMatrixf(TransformMatrixArray[i]);
 
-			if(i==75)
-			{
-				printMatrix(61);
-			}
-
-			//glTranslatef(0,4,0);
-			
-			//printMatrix(i);
-
-//			showReferenceAxis();
+		
 			drawSegment(i);
+
+			if(i==0)
+			{
+				
+				drawHead();
+			}
 
 			glPopMatrix();
 
 		}
-
-
-
-		glPopMatrix();
 
 
 	}
