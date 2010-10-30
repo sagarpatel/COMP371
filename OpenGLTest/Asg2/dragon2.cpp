@@ -8,6 +8,7 @@
 #include "glut.h"
 #include <math.h>
 #include <stdio.h>
+#include "SOIL.h"
 
 //#include "QuadricObjects.h"
 #include "DragonModel.h"
@@ -19,6 +20,8 @@ GLdouble cam_target[3];
 GLdouble cam_up[3];	
 
 
+GLuint tex_2D;
+
 
 double cam_theta;
 double cam_phi;
@@ -29,6 +32,8 @@ int h,w;
 int Wired_or_Shade = GLU_LINE;
 
 bool orthogonalFlag = false;
+
+float zoom = 0.95;
 
 
 // Function Prototypes
@@ -85,6 +90,14 @@ void init(void)
 	dragonmodel.generateBody();
 	dragonmodel.generateTail();
 
+	tex_2D = SOIL_load_OGL_texture
+    (
+        "dragonscales.jpg",
+        SOIL_LOAD_RGBA,
+        SOIL_CREATE_NEW_ID,
+        SOIL_FLAG_NTSC_SAFE_RGB
+    );
+
 	cam_radius = 100;
 
 	// Setting cam position to origin
@@ -112,7 +125,7 @@ void init(void)
 								
 	glLoadIdentity();
 								
-	gluPerspective(90, (GLfloat)w/(GLfloat)h, 1.0, 200.0);
+	gluPerspective(90*zoom, (GLfloat)w/(GLfloat)h, 1.0, 10000.0);
 
 	glMatrixMode(GL_MODELVIEW);	
 								
@@ -165,6 +178,29 @@ void orthogonalStop(void)
     glMatrixMode(GL_MODELVIEW);
 }
 
+
+void drawFloor(void)
+	{
+		glBindTexture(GL_TEXTURE_2D, tex_2D);
+
+		glBegin(GL_QUADS);					
+			glTexCoord2f(1.0f, 1.0f); 
+			glVertex3f(200, 0,  200);	
+			
+			glTexCoord2f(1.0f, 0.0f); 
+			glVertex3f( 200, 0,  -200);	
+			
+			glTexCoord2f(0.0f, 0.0f); 
+			glVertex3f(-200, 0,  -200);
+
+			glTexCoord2f(0.0f, 1.0f); 
+			glVertex3f( -200,  0,  200);
+
+		glEnd();
+	}
+
+
+
 void display(void)
 {
 
@@ -176,6 +212,10 @@ void display(void)
 	
 
 	glLoadIdentity();
+
+
+
+
 
 	if(orthogonalFlag)
 	{
@@ -194,8 +234,82 @@ void display(void)
 			  cam_up[0], cam_up[1], cam_up[2]);
 
 
+
+	drawFloor();
+
+	glPushMatrix();
+	glScalef(0.5,0.5,0.5);
+
+	dragonmodel.drawTrees();
+
+	glPushMatrix();
+	glTranslatef(170,0,110);
+	dragonmodel.drawTrees();
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(110,0,180);
+	dragonmodel.drawTrees();
+	glPopMatrix();
+
+
+	glPushMatrix();
+	glTranslatef(105,0,-110);
+	dragonmodel.drawTrees();
+	glPopMatrix();
+
+
+	glPushMatrix();
+	glTranslatef(180,0,-190);
+	dragonmodel.drawTrees();
+	glPopMatrix();
+
+	glPushMatrix();
+	glTranslatef(-105,0,180);
+	dragonmodel.drawTrees();
+	glPopMatrix();
+
+
+	glPushMatrix();
+	glTranslatef(-180,0,190);
+	dragonmodel.drawTrees();
+	glPopMatrix();
+
+
+	glPushMatrix();
+	glTranslatef(-195,0,-110);
+	dragonmodel.drawTrees();
+	glPopMatrix();
+
+
+	glPushMatrix();
+	glTranslatef(-110,0,-170);
+	dragonmodel.drawTrees();
+	glPopMatrix();
+
+
+
+	glPushMatrix();
+	glTranslatef(10,0,110);
+	dragonmodel.drawTrees();
+	glPopMatrix();
+
+
+
+
+	glPopMatrix();
+
+
+//Psuh Dragon up
+	glPushMatrix();
+
+	glTranslatef(0,20,0);
 	
 	dragonmodel.drawDragon();
+
+
+
+	glPopMatrix();
     
 
 	if(orthogonalFlag)
@@ -214,7 +328,7 @@ void reshape (int w, int h)
 	glViewport (0, 0, (GLsizei) w, (GLsizei) h); 
 	glMatrixMode (GL_PROJECTION);
 	glLoadIdentity ();
-	gluPerspective(90.0, (GLfloat) w/(GLfloat) h, 1.0, 200.0);
+	gluPerspective(90*zoom, (GLfloat) w/(GLfloat) h, 1.0, 800.0);
 	glMatrixMode (GL_MODELVIEW);
 }
 
@@ -222,6 +336,16 @@ void keyboard(unsigned char key, int x, int y)
 {
 	switch (key) 
 	{
+
+		case 'z':
+			zoom -= 0.01;
+			//printf("%f \n",zoom);
+			break;
+		
+		case 'Z':
+			zoom += 0.01;
+			break;
+
 
 		case 'a':
 			dragonmodel.animateDragon();

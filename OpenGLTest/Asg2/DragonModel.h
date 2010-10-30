@@ -1097,7 +1097,7 @@ public:
 
 		glGetFloatv(GL_MODELVIEW_MATRIX , TransformMatrixArray[i]);
 
-		printMatrix(i);
+		//printMatrix(i);
 			//printf("%f \n", TransformMatrixArray[1][1]);
 		}
 		glPopMatrix();
@@ -1207,6 +1207,52 @@ public:
 
 
 	}
+
+
+
+
+
+
+		
+	
+
+	void drawTrees(void)
+	{
+
+		int tree_height = 10;
+		int tree_thickness = 2;
+
+		glPushMatrix();
+		glPushAttrib(GL_CURRENT_BIT);
+
+
+		// Original Code : 102,58,25
+		// Coverted = 0.3984375, 0.226525, 0.09765625
+		glColor3f(0.3984375, 0.226525, 0.09765625);
+		
+
+		glTranslatef(10,0,10);
+
+		glRotatef(-90,1,0,0);
+
+		//showReferenceAxis();
+		drawCylindre(tree_thickness,tree_thickness,tree_height);
+
+
+		glTranslatef(0,0,tree_height+5);
+
+		//Autumn Color http://www.perbang.dk/rgb/FF5700/
+		// Original Code: 255,87,0
+		// Converted = 1, 0.33984375, 0
+		glColor3f(1, 0.233984375, .05);
+
+		drawSphere(8.0,15,15);
+
+		glPopAttrib();
+		glPopMatrix();
+		
+	}
+
 
 	
 
