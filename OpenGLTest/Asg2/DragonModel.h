@@ -9,6 +9,11 @@
 
 const int segments = 346;
 
+float Pitch_counter = 0;
+float Yaw_counter = 0;
+float Roll_counter = 0;
+
+
 class DragonModel : public QuadricObjects
 {
 public:
@@ -1106,47 +1111,75 @@ public:
 
 	}
 
-	void animateDragon(void)
+	void animateDragon(float *pitch, float *yaw, float *roll, float dist)
 	{
+
 
 		//printMatrix(0);
 	
 		//Move up values
-
-		for(int i=segments; i>0; i--)
+		if (dist>0)
 		{
-			if(i==0)
+			for(int i=segments; i>0; i--)
 			{
-				printf("oh noes");
-			}
+				if(i==0)
+				{
+					printf("oh noes");
+				}
 
-			// if i==0, means transfering first
-			for(int j=0; j<16; j++)
-			{
-						
-				TransformMatrixArray[i][j] = TransformMatrixArray[i-1][j];
-				//printf("%f \n",TransformMatrixArray[i][j]);
-			}
+				// if i==0, means transfering first
+				for(int j=0; j<16; j++)
+				{
+							
+					TransformMatrixArray[i][j] = TransformMatrixArray[i-1][j];
+					//printf("%f \n",TransformMatrixArray[i][j]);
+				}
 
+			}
 		}
 
 
+
+
+		float Pitch = *pitch;
+		float Yaw = *yaw;
+		float Roll = *roll;
+
+		if(Pitch_counter<90 && Pitch_counter>-90)
+		{
+			Pitch_counter += Pitch;	
+		}
+		else{Pitch =0;}
+
+		if(Yaw_counter<90 && Yaw_counter>-90)
+		{
+			Yaw_counter += Yaw;	
+		}
+		else{Yaw =0;}
+
+		if(Roll_counter<90 && Roll_counter>-90)
+		{
+			Roll_counter += Roll;	
+		}
+		else{Roll =0;}
+
+
+		printf("Pitch: %f    Yaw: %f   Roll: %f \n", Pitch, Yaw, Roll);
+
 	// Fix value of first element to reflect transformation
-
-		//printMatrix(0);
-
-		//glMatrixMode(GL_MODELVIEW);
 
 		glPushMatrix();
 
-
-
 		glLoadMatrixf(TransformMatrixArray[0]);
 		
-
 		//Transformations to the first coordinate
-		glRotatef(5,0,1,1);
-		glTranslatef(0,0,1.5);
+		
+		glTranslatef(0,0,dist);
+		
+		glRotatef(Pitch,1,0,0); // Pitch
+		glRotatef(Yaw,0,1,0); // Yaw
+		glRotatef(Roll,0,0,1); // Roll
+		
 		glScalef(1,1,1);
 		//Dumped transformed into first position
 		glGetFloatv(GL_MODELVIEW_MATRIX , TransformMatrixArray[0]);
@@ -1154,8 +1187,6 @@ public:
 		glPopMatrix();
 
 		//printMatrix(0);
-
-
 
 	}
 

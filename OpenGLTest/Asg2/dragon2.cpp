@@ -36,6 +36,10 @@ bool orthogonalFlag = false;
 float zoom = 0.95;
 
 
+float Pitch = 0;
+float Yaw = 0;
+float Roll = 0;
+
 // Function Prototypes
 void init(void);
 void showReferenceAxis(void);
@@ -89,6 +93,8 @@ void init(void)
 	
 	dragonmodel.generateBody();
 	dragonmodel.generateTail();
+	// Shift values just once
+	dragonmodel.animateDragon(&Pitch,&Yaw,&Roll,1.5);
 
 	tex_2D = SOIL_load_OGL_texture
     (
@@ -334,8 +340,59 @@ void reshape (int w, int h)
 
 void keyboard(unsigned char key, int x, int y)
 {
+
+	
 	switch (key) 
 	{
+
+
+		case 'k':
+			Pitch += 1;
+			Yaw = 0;
+			Roll = 0;
+			if(Pitch>90){Pitch = 90;}
+			if(Pitch<0){Pitch=0;}
+			break;
+		
+		case 'i':
+			Pitch -= 1;
+			Yaw = 0;
+			Roll = 0;
+			if(Pitch<-90){Pitch = -90;}
+			if(Pitch>0){Pitch =0;}
+			break;
+
+		case 'j':
+			Yaw += 1;
+			Pitch = 0;
+			Roll = 0;
+			if(Yaw>90){Yaw = 90;}
+			if(Yaw<0){Yaw=0;}
+			break;
+		
+		case 'l':
+			Yaw -= 1;
+			Pitch = 0;
+			Roll = 0;
+			if(Yaw<-90){Yaw = -90;}
+			if(Yaw>0){Yaw =0;}
+			break;
+
+		case 'u':
+			Roll += 1;
+			Yaw = 0;
+			Pitch =0;
+			if(Roll>90){Roll = 90;}
+			if(Roll<0){Roll=0;}
+			break;
+		
+		case 'o':
+			Roll -= 1;
+			Yaw = 0;
+			Pitch =0;
+			if(Roll<-90){Roll = -90;}
+			if(Roll>0){Roll =0;}
+			break;
 
 		case 'z':
 			zoom -= 0.01;
@@ -348,7 +405,7 @@ void keyboard(unsigned char key, int x, int y)
 
 
 		case 'a':
-			dragonmodel.animateDragon();
+			dragonmodel.animateDragon(&Pitch,&Yaw,&Roll,1.5);
 			break;
 
 		case 'f':				// Move Camera forward.
@@ -375,11 +432,11 @@ void keyboard(unsigned char key, int x, int y)
 			Wired_or_Shade = GLU_POINT;
 			break;
 		
-		case 'o':
-			orthogonalFlag = true;
-			break;
-		case 'O':
-			orthogonalFlag = true;
+		// case 'o':
+		// 	orthogonalFlag = true;
+		// 	break;
+		// case 'O':
+		// 	orthogonalFlag = true;
 
 		case 'p':
 			orthogonalFlag = false;
@@ -407,6 +464,8 @@ void keyboard(unsigned char key, int x, int y)
 		exit(0);
 		break; 
 	}
+
+	dragonmodel.animateDragon(&Pitch,&Yaw,&Roll,0);
 
 	glutPostRedisplay();
 }
