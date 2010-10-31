@@ -235,11 +235,16 @@ void display(void)
 	
 	
 
-	gluLookAt(cam_position[0],cam_position[1],cam_position[2],
-			  cam_target[0], cam_target[1], cam_target[2],
-			  cam_up[0], cam_up[1], cam_up[2]);
+	// gluLookAt(cam_position[0],cam_position[1],cam_position[2],
+	// 		  cam_target[0], cam_target[1], cam_target[2],
+	// 		  cam_up[0], cam_up[1], cam_up[2]);
+
+	// gluLookAt(30,30,30,
+	// 		  0,30,0,
+	// 		  0,1,0);
 
 
+	dragonmodel.updateCamera();
 
 	drawFloor();
 

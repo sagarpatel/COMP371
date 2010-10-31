@@ -1200,8 +1200,8 @@ public:
 
 
 
-		 printf("Pitch: %f    Yaw: %f   Roll: %f \n", Pitch, Yaw, Roll);
-		 printf("PitchCounter: %f \n\n",Pitch_counter);
+		 // printf("Pitch: %f    Yaw: %f   Roll: %f \n", Pitch, Yaw, Roll);
+		 // printf("PitchCounter: %f \n\n",Pitch_counter);
 
 	// Fix value of first element to reflect transformation
 
@@ -1224,7 +1224,38 @@ public:
 
 		glPopMatrix();
 
-		//printMatrix(0);
+		printMatrix(0);
+
+		
+
+	}
+
+	void updateCamera(void)
+	{
+		
+
+		// gluLookAt(130,130,130,
+		// 	  	  0,30,0,
+		// 	  	  0,1,0);
+
+		float CameraTarget[16];
+
+		glPushMatrix();
+
+		glLoadMatrixf(TransformMatrixArray[0]);
+		
+		glTranslatef(0,0,10);
+
+		glGetFloatv(GL_MODELVIEW_MATRIX , CameraTarget);
+
+		glPopMatrix();
+
+
+
+		gluLookAt(TransformMatrixArray[0][12],TransformMatrixArray[0][13],TransformMatrixArray[0][14],
+			  	  CameraTarget[12],CameraTarget[13],CameraTarget[14],
+			  	  0,1,0);
+		
 
 	}
 
