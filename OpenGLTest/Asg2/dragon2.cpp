@@ -33,6 +33,8 @@ int Wired_or_Shade = GLU_LINE;
 
 bool orthogonalFlag = false;
 
+bool cameraFlag = false; // false == TP true == FP
+
 float zoom = 0.95;
 
 
@@ -234,17 +236,18 @@ void display(void)
 	cam_position[2] = cam_radius * sin(cam_phi) * cos(cam_theta);
 	
 	
+	if(cameraFlag == false)
+	{
 
-	// gluLookAt(cam_position[0],cam_position[1],cam_position[2],
-	// 		  cam_target[0], cam_target[1], cam_target[2],
-	// 		  cam_up[0], cam_up[1], cam_up[2]);
+		gluLookAt(cam_position[0],cam_position[1],cam_position[2],
+				  cam_target[0], cam_target[1], cam_target[2],
+				  cam_up[0], cam_up[1], cam_up[2]);
+	}
 
-	// gluLookAt(30,30,30,
-	// 		  0,30,0,
-	// 		  0,1,0);
-
-
-	dragonmodel.updateCamera();
+	if(cameraFlag == true)
+	{
+		dragonmodel.updateCamera();
+	}
 
 	drawFloor();
 
@@ -349,6 +352,14 @@ void keyboard(unsigned char key, int x, int y)
 	
 	switch (key) 
 	{
+
+		case '1':
+			cameraFlag = true;
+			break;
+
+		case '3':
+			cameraFlag = false;
+			break;
 
 		case 'r':
 			glLoadIdentity();
