@@ -345,6 +345,11 @@ void keyboard(unsigned char key, int x, int y)
 	switch (key) 
 	{
 
+		case 'r':
+			glLoadIdentity();
+			dragonmodel.generateBody();
+			dragonmodel.generateTail();
+
 
 		case 'k':
 			Pitch += 1;
@@ -352,6 +357,7 @@ void keyboard(unsigned char key, int x, int y)
 			Roll = 0;
 			if(Pitch>90){Pitch = 90;}
 			if(Pitch<0){Pitch=0;}
+			dragonmodel.animateDragon(&Pitch,&Yaw,&Roll,0);
 			break;
 		
 		case 'i':
@@ -360,6 +366,7 @@ void keyboard(unsigned char key, int x, int y)
 			Roll = 0;
 			if(Pitch<-90){Pitch = -90;}
 			if(Pitch>0){Pitch =0;}
+			dragonmodel.animateDragon(&Pitch,&Yaw,&Roll,0);
 			break;
 
 		case 'j':
@@ -368,6 +375,7 @@ void keyboard(unsigned char key, int x, int y)
 			Roll = 0;
 			if(Yaw>90){Yaw = 90;}
 			if(Yaw<0){Yaw=0;}
+			dragonmodel.animateDragon(&Pitch,&Yaw,&Roll,0);
 			break;
 		
 		case 'l':
@@ -376,6 +384,7 @@ void keyboard(unsigned char key, int x, int y)
 			Roll = 0;
 			if(Yaw<-90){Yaw = -90;}
 			if(Yaw>0){Yaw =0;}
+			dragonmodel.animateDragon(&Pitch,&Yaw,&Roll,0);
 			break;
 
 		case 'u':
@@ -384,6 +393,7 @@ void keyboard(unsigned char key, int x, int y)
 			Pitch =0;
 			if(Roll>90){Roll = 90;}
 			if(Roll<0){Roll=0;}
+			dragonmodel.animateDragon(&Pitch,&Yaw,&Roll,0);
 			break;
 		
 		case 'o':
@@ -392,6 +402,7 @@ void keyboard(unsigned char key, int x, int y)
 			Pitch =0;
 			if(Roll<-90){Roll = -90;}
 			if(Roll>0){Roll =0;}
+			dragonmodel.animateDragon(&Pitch,&Yaw,&Roll,0);
 			break;
 
 		case 'z':
@@ -465,7 +476,7 @@ void keyboard(unsigned char key, int x, int y)
 		break; 
 	}
 
-	dragonmodel.animateDragon(&Pitch,&Yaw,&Roll,0);
+	
 
 	glutPostRedisplay();
 }

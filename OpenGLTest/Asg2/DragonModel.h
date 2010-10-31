@@ -13,6 +13,8 @@ float Pitch_counter = 0;
 float Yaw_counter = 0;
 float Roll_counter = 0;
 
+float MaxRotation = 45;
+
 
 class DragonModel : public QuadricObjects
 {
@@ -1145,26 +1147,58 @@ public:
 		float Yaw = *yaw;
 		float Roll = *roll;
 
-		if(Pitch_counter<90 && Pitch_counter>-90)
+		Pitch_counter += Pitch;
+		Yaw_counter += Yaw;
+		Roll_counter += Roll;
+
+
+		if(Pitch_counter>MaxRotation)
 		{
-			Pitch_counter += Pitch;	
+			Pitch=0;
+			Pitch_counter=MaxRotation;	
 		}
-		else{Pitch =0;}
 
-		if(Yaw_counter<90 && Yaw_counter>-90)
+
+		if(Pitch_counter<-MaxRotation)
 		{
-			Yaw_counter += Yaw;	
+			Pitch=0;
+			Pitch_counter=-MaxRotation;		
 		}
-		else{Yaw =0;}
+	
 
-		if(Roll_counter<90 && Roll_counter>-90)
+		if(Yaw_counter>MaxRotation)
 		{
-			Roll_counter += Roll;	
+			Yaw=0;
+			Yaw_counter=MaxRotation;	
 		}
-		else{Roll =0;}
+		
+
+		if(Yaw_counter<-MaxRotation)
+		{
+			Yaw=0;
+			Yaw_counter=-MaxRotation;	
+		}
 
 
-		printf("Pitch: %f    Yaw: %f   Roll: %f \n", Pitch, Yaw, Roll);
+
+		if(Roll_counter>MaxRotation)
+		{
+			Roll=0;
+			Roll_counter=MaxRotation;	
+		}
+		
+
+		if(Roll_counter<-MaxRotation)
+		{
+			Roll=0;
+			Roll_counter=-MaxRotation;	
+		}
+
+
+
+
+		// printf("Pitch: %f    Yaw: %f   Roll: %f \n", Pitch, Yaw, Roll);
+		// printf("PitchCounter: %f \n\n",Pitch_counter);
 
 	// Fix value of first element to reflect transformation
 
@@ -1183,6 +1217,7 @@ public:
 		glScalef(1,1,1);
 		//Dumped transformed into first position
 		glGetFloatv(GL_MODELVIEW_MATRIX , TransformMatrixArray[0]);
+
 
 		glPopMatrix();
 
