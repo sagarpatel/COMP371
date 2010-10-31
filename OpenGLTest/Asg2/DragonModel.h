@@ -1147,10 +1147,13 @@ public:
 		float Yaw = *yaw;
 		float Roll = *roll;
 
-		Pitch_counter += Pitch;
-		Yaw_counter += Yaw;
-		Roll_counter += Roll;
 
+		if (dist==0)
+		{
+			Pitch_counter += Pitch;
+			Yaw_counter += Yaw;
+			Roll_counter += Roll;
+		}
 
 		if(Pitch_counter>MaxRotation)
 		{
@@ -1197,8 +1200,8 @@ public:
 
 
 
-		// printf("Pitch: %f    Yaw: %f   Roll: %f \n", Pitch, Yaw, Roll);
-		// printf("PitchCounter: %f \n\n",Pitch_counter);
+		 printf("Pitch: %f    Yaw: %f   Roll: %f \n", Pitch, Yaw, Roll);
+		 printf("PitchCounter: %f \n\n",Pitch_counter);
 
 	// Fix value of first element to reflect transformation
 
