@@ -31,6 +31,8 @@ int h,w;
 
 int Wired_or_Shade = GLU_LINE;
 
+int ArmCounter = 10;
+
 bool orthogonalFlag = false;
 
 bool cameraFlag = false; // false == TP true == FP
@@ -46,8 +48,6 @@ float Roll = 0;
 void init(void);
 void showReferenceAxis(void);
 
-void orthogonalStart(void);
-void orthogonalStop(void);
 
 void display(void);
 void reshape (int w, int h);
@@ -59,7 +59,7 @@ void specialCallbackProc (int key, int x, int y);
 
 
 //QuadricObjects quadricobjects(&Wired_or_Shade);
-DragonModel dragonmodel(&Wired_or_Shade);
+DragonModel dragonmodel(&Wired_or_Shade,&ArmCounter);
 
 
 int main(int argc, char** argv)
@@ -117,7 +117,7 @@ void init(void)
 
 	// Point camera to center of dragon
 	cam_target[0] = 0;
-	cam_target[1] = 30;
+	cam_target[1] = 40;
 	cam_target[2] = 0;
 
 	// Setting camera's Up vector
@@ -164,28 +164,6 @@ void init(void)
 
 
 
-void orthogonalStart(void) 
-{
-    glMatrixMode(GL_PROJECTION);
-    
-    glPushMatrix();
-    glLoadIdentity();
-    
-    gluOrtho2D(0, w, 0, h);
-    
-    glScalef(1, -1, 1);
-    glTranslatef(0, -h, 0);
-    
-    glMatrixMode(GL_MODELVIEW);
-}
-
-void orthogonalStop(void) 
-{
-    glMatrixMode(GL_PROJECTION);
-    glPopMatrix();
-    glMatrixMode(GL_MODELVIEW);
-}
-
 
 void drawFloor(void)
 	{
@@ -193,16 +171,16 @@ void drawFloor(void)
 
 		glBegin(GL_QUADS);					
 			glTexCoord2f(1.0f, 1.0f); 
-			glVertex3f(200, 0,  200);	
+			glVertex3f(400, 0,  400);	
 			
 			glTexCoord2f(1.0f, 0.0f); 
-			glVertex3f( 200, 0,  -200);	
+			glVertex3f( 400, 0,  -400);	
 			
 			glTexCoord2f(0.0f, 0.0f); 
-			glVertex3f(-200, 0,  -200);
+			glVertex3f(-400, 0,  -400);
 
 			glTexCoord2f(0.0f, 1.0f); 
-			glVertex3f( -200,  0,  200);
+			glVertex3f( -400,  0,  400);
 
 		glEnd();
 	}
@@ -211,6 +189,10 @@ void drawFloor(void)
 
 void display(void)
 {
+
+	//135-206-250
+
+	glClearColor(0.52734375,0.8046875,0.9765625,0);
 
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
@@ -223,13 +205,6 @@ void display(void)
 
 
 
-
-
-	if(orthogonalFlag)
-	{
-		orthogonalStart();
-		
-	}
 
 	cam_position[0] = cam_radius * sin(cam_phi) * sin(cam_theta);
 	cam_position[1] = cam_radius * cos(cam_phi);
@@ -309,6 +284,25 @@ void display(void)
 	glPopMatrix();
 
 
+	glPushMatrix();
+	glTranslatef(350,0,-110);
+	dragonmodel.drawTrees();
+	glPopMatrix();
+
+
+
+	glPushMatrix();
+	glTranslatef(-300,0,210);
+	dragonmodel.drawTrees();
+	glPopMatrix();
+
+
+
+	glPushMatrix();
+	glTranslatef(-300,0,-310);
+	dragonmodel.drawTrees();
+	glPopMatrix();
+
 
 
 	glPopMatrix();
@@ -324,13 +318,7 @@ void display(void)
 
 
 	glPopMatrix();
-    
 
-	if(orthogonalFlag)
-	{
-		orthogonalStop();
-		
-	}
 
 	glutSwapBuffers();
 
@@ -459,18 +447,6 @@ void keyboard(unsigned char key, int x, int y)
 			Wired_or_Shade = GLU_POINT;
 			break;
 		
-		// case 'o':
-		// 	orthogonalFlag = true;
-		// 	break;
-		// case 'O':
-		// 	orthogonalFlag = true;
-
-		case 'p':
-			orthogonalFlag = false;
-			break;
-		case 'P':
-			orthogonalFlag = false;
-			break;
 
 		case 'c':
 			cam_radius = 100;

@@ -16,6 +16,8 @@ float Roll_counter = 0;
 float MaxRotation = 45;
 
 
+
+
 class DragonModel : public QuadricObjects
 {
 public:
@@ -26,14 +28,17 @@ public:
 	
 	float TransformMatrixArray[segments-1][16];
 
-
+	int *ArmCounter;
 	
 
-	DragonModel(int *wired_or_shade) : QuadricObjects()
+	DragonModel(int *wired_or_shade,int *AC) : QuadricObjects()
 	{
 		// Initiliazation Code Here
 		SetWoS(wired_or_shade);
 
+		ArmCounter = AC;
+
+		//printf("armcounter: %d \n",*ArmCounter );
 
 	}
 
@@ -228,100 +233,7 @@ public:
 
 	}
 
-	void drawTail(void)
-	{
-
-		glPushAttrib(GL_CURRENT_BIT);
-
-		glPushMatrix();
-
-		glTranslatef(0,0,1);
-
-		int height_increment;
-
-		for(int i = 0; i<60; i++)
-		{
-
-			//showReferenceAxis();
-
-			height_increment = i;
-
-			glTranslatef(0 , 0 , -1.5);
-			//glRotatef(-0.2*height_increment,-1,0,0);
-			
-			if (i <30)
-			{
-				glRotatef(4,1,0,0);
-
-				glRotatef(-0.5*height_increment,0,1,0);
-			}
-
-			if (i>=30 && i < 45)
-			{
-				glRotatef(4,0,1,0);
-				glRotatef(-9,1,0,0);
-				glRotatef(4,0,0,1);
-			}
-
-
-			if (i>=50)
-			{
-				glRotatef(4,0,0,1);
-				glRotatef(7,1,0,0);
-			}
-
-			// Transformations for main tail end here
-
-			// Save current matric into seperate array
-
-			glGetFloatv(GL_MODELVIEW_MATRIX , TransformMatrixArray[60-i]);
-			//printf("%f \n", TransformMatrixArray[1][1]);
-
-			drawSpikes(1,4);
-
-			if(i<57)
-			{
-				drawCylindre(3.0,1.5,5);
-			}
-
-			if (i<=42)
-			{
-				drawBelly();
-			}
-
-			if( i>42 && i<53)
-			{
-				drawBelly(3-0.01*i);
-
-			}
-
-			if(i>50)
-			{
-				glPushMatrix();
-
-				glTranslatef(0,4,5);
-				glScalef(1,-2,1);
-
-				drawSpikes(2,4.5);
-				glPopMatrix();
-
-			}
-
-			if(i>=57)
-			{
-				glPushMatrix();
-				glTranslatef(0,2,0);
-				glScalef(1.25,-1.25,1.25);			
-				drawSpikes(2,4);
-				glPopMatrix();
-			}
-		}
-
-		glPopMatrix();
-
-		glPopAttrib();
-
-	}
+	
 
 	
 	void drawRightArm(void)
@@ -567,251 +479,6 @@ public:
 
 	}
 
-
-
-
-
-	void drawBody(void)
-	{
-		
-
-		int height_increment;
-
-		for(int i =0; i<100;i++)
-		{
-
-			if(i==1)
-			{
-				drawLegs();
-			}		
-
-			height_increment = i;
-
-			if (i>20)
-			{
-				height_increment = 20;
-			}
-			if (i>40)
-			{
-				height_increment = 40;
-			}
-
-			if (i>100)
-			{
-				height_increment = 10;
-			}
-
-		
-			glTranslatef(0 , 0 , 1.5);
-			glRotatef(-0.2*height_increment,1,0,0);
-			glRotatef(2,0,1,0);
-			glRotatef(2,0,0,1);
-
-			drawCylindre(3.0,1.5,5);
-
-			drawBelly();
-
-		//	showReferenceAxis();
-
-			if(i<50)
-			{
-			drawSpikes(1,4);
-			}
-			if(i>=50)
-			{
-				
-				drawSpikes(1,4.5);
-			}
-			
-					
-			
-		}
-
-
-
-
-
-		for(int j =0; j<50; j++)
-		{
-
-			height_increment = j;
-
-			if (j>20)
-			{
-				height_increment = 20;
-			}
-		
-			glTranslatef(0 , 0 , 1.5);
-
-			glRotatef(0.235*height_increment,1,0,0);
-
-			glRotatef(2,0,1,0);
-
-			glRotatef(2,0,0,1);
-
-			drawCylindre(3.0,1.5,5);
-			
-			drawBelly();
-			
-			drawSpikes(1,4.7);	
-			
-		}
-
-
-
-		for(int k =0; k<50; k++)
-		{
-
-			height_increment = k;
-
-			if (k>10)
-			{
-				height_increment = 40;
-			}
-
-		
-			glTranslatef(0 , 0 , 1.5);
-
-			glRotatef(0.2*height_increment,1,0,0);
-
-			glRotatef(2,0,1,0);
-
-			glRotatef(4,0,0,1);
-
-			drawCylindre(3.0,1.5,5);
-			
-			drawBelly();
-			
-			drawSpikes(1,4.6);		
-			
-		}
-
-
-		for(int l =0; l<30; l++)
-		{
-
-			height_increment = l;
-
-			if (l>1)
-			{
-				height_increment = 40;
-			}
-
-		
-			glTranslatef(0 , 0 , 1.5);
-
-			glRotatef(-0.2*height_increment,1,0,0);
-
-			//glRotatef(2,0,1,0);
-
-			glRotatef(4,0,0,1);
-
-			drawCylindre(3.0,1.5,5);
-			
-			drawBelly();
-
-			drawSpikes(1,4.7);			
-			
-		}
-
-		for(int m =0; m<10; m++)
-		{
-
-			glTranslatef(0 , 0 , 1.5);
-
-			drawCylindre(3.0,1.5,5);	
-			
-			drawBelly();
-			
-			drawSpikes(1,4.75);	
-			
-		}
-
-
-		for(int n =0; n<15; n++)
-		{
-		
-			glTranslatef(0 , 0 , 1.5);
-
-			glRotatef(4,0,1,0);
-
-			glRotatef(4,1,0,0);
-
-			//Fix rotation for neck/head
-			glRotatef(5,0,0,1);
-			glRotatef(-1,0,1,0);
-		//	showReferenceAxis();
-
-			drawCylindre(3.0,1.5,5);	
-			
-			drawBelly();
-
-			drawSpikes(1,4.8);
-			
-		}
-
-		glRotatef(-17,0,0,1);
-
-
-
-
-		for(int m =0; m<15; m++)
-		{
-
-			glTranslatef(0 , 0 , 1.5);
-
-			glRotatef(-10,1,0,0);
-
-			drawCylindre(3.0,1.5,5);	
-
-			drawBelly();
-
-			drawSpikes(1,4.85);
-
-			if(m == 5)
-			{
-				drawWings();
-			}
-			
-		}
-
-		drawArms();
-
-		for(int m =0; m<14; m++)
-		{
-
-			glTranslatef(0 , 0 , 1.5);
-
-			glRotatef(15,1,0,0);
-
-			drawCylindre(3.0,1.5,5);	
-			
-			drawBelly();
-			
-			if(m<12)
-			{
-				drawSpikes(1,5);		
-			}
-		}
-
-		glTranslatef(0 , 0 , 1.5);
-
-		glRotatef(-15,1,0,0);
-
-		drawCylindre(3.0,1.5,5);	
-			
-		drawBelly();
-
-
-
-		glTranslatef(0 , 0 , 1.5);
-
-		glRotatef(-15,1,0,0);
-
-		drawCylindre(3.0,1.5,5);	
-			
-		//drawBelly();
-	}
 
 
 
@@ -1295,11 +962,81 @@ public:
 		
 			drawSegment(i);
 
+
+//ARMS		
+			
+			//printf("armcoutner %d \n",*ArmCounter);
+
+			float rot = 0;
+
+			//rot = *ArmCounter;
+
+			if(i==290)
+			{
+
+				glPushMatrix();
+				glRotatef(rot,0,0,0);
+				drawArms();
+				glPopMatrix();
+			}
+
+			if(i==10)
+			{
+
+				glPushMatrix();
+				glRotatef(rot,0,0,0);
+				glRotatef(-80,1,0,0);
+				glTranslatef(0,0,-2);
+				drawArms();
+				glPopMatrix();
+
+			}
+
+			if(i==24)
+			{
+				drawWings();
+			}
+
+
 			if(i==0)
 			{
 				
 				drawHead();
 			}
+
+
+//Tail
+			if(i==segments-1)
+			{
+
+				glPushMatrix();
+				
+				glTranslatef(0,-4,5);
+				glScalef(1.75,2,1);
+
+				glPushMatrix();
+
+				for(int j =0;j<7;j++)
+				{
+					glTranslatef(0,0.2,-1.5);
+					drawSpikes(2,4.5);
+				}
+
+				glPopMatrix();
+
+				glTranslatef(0,1,0);
+				glScalef(1.25,-0.25,1.25);
+
+				for(int k =0;k<3;k++)
+				{
+					glTranslatef(0,0.2,-1.5);
+					drawSpikes(2,4);
+				}
+
+				glPopMatrix();
+				
+			}
+
 
 			glPopMatrix();
 
