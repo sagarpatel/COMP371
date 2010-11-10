@@ -921,7 +921,7 @@ public:
 
 		gluLookAt(TransformMatrixArray[0][12],TransformMatrixArray[0][13],TransformMatrixArray[0][14],
 			  	  CameraTarget[12],CameraTarget[13],CameraTarget[14],
-			  	  0,1,0);
+			  	  TransformMatrixArray[0][4],TransformMatrixArray[0][5],TransformMatrixArray[0][7]); //Thanks Henk!
 		
 
 	}
