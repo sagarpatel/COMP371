@@ -59,7 +59,7 @@ void specialCallbackProc (int key, int x, int y);
 
 
 //QuadricObjects quadricobjects(&Wired_or_Shade);
-DragonModel dragonmodel(&Wired_or_Shade,&ArmCounter);
+DragonModel dragonmodel(&Wired_or_Shade,&ArmCounter,&tex_2D);
 
 
 int main(int argc, char** argv)
@@ -105,6 +105,11 @@ void init(void)
         SOIL_CREATE_NEW_ID,
         SOIL_FLAG_NTSC_SAFE_RGB
     );
+
+    // glGenTextures(1,&tex_2D);
+    // glDeleteTextures(1,&tex_2D);
+
+    
 
 	cam_radius = 100;
 
@@ -156,6 +161,7 @@ void init(void)
 	// Allows color on models with lighting
 	glEnable(GL_COLOR_MATERIAL);
 	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+
 	
 	//dragonmodel.generateTail();
 
@@ -166,8 +172,16 @@ void init(void)
 
 
 void drawFloor(void)
-	{
-		glBindTexture(GL_TEXTURE_2D, tex_2D);
+{
+
+
+	glPushAttrib(GL_ALL_ATTRIB_BITS);
+
+	glEnable(GL_TEXTURE_2D);
+	
+
+//		glBindTexture(GL_TEXTURE_2D, tex_2D);
+	glColor3f(1.0, 1.0, 1.0);
 
 		glBegin(GL_QUADS);					
 			glTexCoord2f(1.0f, 1.0f); 
@@ -183,7 +197,11 @@ void drawFloor(void)
 			glVertex3f( -400,  0,  400);
 
 		glEnd();
-	}
+
+		glDisable(GL_TEXTURE_2D);
+
+		glPopAttrib();
+}
 
 
 

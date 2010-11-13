@@ -2,11 +2,13 @@
 #include "glut.h"
 #include <math.h>
 #include <stdio.h>
-
+ 
 
 
 class QuadricObjects
 {
+
+
 	
 public:
 
@@ -15,6 +17,7 @@ public:
 	// Constructor
 	QuadricObjects(void)//int *wired_or_shade )
 	{
+
 		// Put initialiazation here
 		//Wired_or_Shade = wired_or_shade;
 	}
@@ -24,7 +27,8 @@ public:
 		
 		Wired_or_Shade = wired_or_shade;
 	}
-		
+
+
 	void drawCylindre(float TopRadius, float BotRadius, float Height)
 	{
 
@@ -44,6 +48,48 @@ public:
 		gluDeleteQuadric(CylindrePointer);
 								
 		glPopMatrix();
+
+	}	
+		
+	void drawCylindre(float TopRadius, float BotRadius, float Height, GLuint *Tex)
+	{
+
+
+	glPushAttrib(GL_ALL_ATTRIB_BITS); 
+
+	glColor4f(1.0, 1.0, 1.0, 1.0);
+
+	glEnable(GL_TEXTURE_2D);
+	
+//	glBindTexture(GL_TEXTURE_2D, *Tex );
+
+		int CylindreDetailRadius = 8;
+		int CylindreDetailHeight = 3;
+
+		GLUquadricObj* CylindrePointer;
+
+		glPushMatrix();		
+
+		CylindrePointer = gluNewQuadric();
+		
+		gluQuadricNormals(CylindrePointer,GLU_SMOOTH);
+							
+	gluQuadricOrientation(CylindrePointer, GLU_OUTSIDE);
+	gluQuadricTexture(CylindrePointer, GLU_TRUE);		
+		
+		
+								
+		gluQuadricDrawStyle(CylindrePointer, *Wired_or_Shade);
+
+		gluCylinder(CylindrePointer, TopRadius, BotRadius, Height, CylindreDetailRadius, CylindreDetailHeight);
+								
+		gluDeleteQuadric(CylindrePointer);
+	
+		glDisable(GL_TEXTURE_2D);
+									
+		glPopMatrix();
+
+			glPopAttrib();
 
 	}	
 

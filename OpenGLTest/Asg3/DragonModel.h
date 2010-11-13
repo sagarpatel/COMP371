@@ -4,8 +4,9 @@
 #include <math.h>
 #include <stdio.h>
 
+
 #include "QuadricObjects.h"
- 
+
 
 const int segments = 346;
 
@@ -14,8 +15,6 @@ float Yaw_counter = 0;
 float Roll_counter = 0;
 
 float MaxRotation = 45;
-
-
 
 
 class DragonModel : public QuadricObjects
@@ -30,13 +29,18 @@ public:
 
 	int *ArmCounter;
 	
+	
+	GLuint *Tex_2D;
+	
 
-	DragonModel(int *wired_or_shade,int *AC) : QuadricObjects()
+	DragonModel(int *wired_or_shade,int *AC, GLuint *Tex) : QuadricObjects()
 	{
 		// Initiliazation Code Here
 		SetWoS(wired_or_shade);
 
 		ArmCounter = AC;
+
+		Tex_2D = Tex;
 
 		//printf("armcounter: %d \n",*ArmCounter );
 
@@ -490,31 +494,31 @@ public:
 
 		if(counter%5 == 0)
 		{
-			drawCylindre(3.0,1.5,5);
+			drawCylindre(3.0,1.5,5,Tex_2D);
 			drawBelly();
 			drawSpikes(1,4);
 		}
 		if(counter%5 == 1)
 		{
-			drawCylindre(3.0,1.5,5);
+			drawCylindre(3.0,1.5,5,Tex_2D);
 			drawBelly();
 			drawSpikes(1,4.1);
 		}
 		if(counter%5 == 2)
 		{
-			drawCylindre(3.0,1.5,5);
+			drawCylindre(3.0,1.5,5,Tex_2D);
 			drawBelly();
 			drawSpikes(1,4.2);
 		}
 		if(counter%5 == 3)
 		{
-			drawCylindre(3.0,1.5,5);
+			drawCylindre(3.0,1.5,5,Tex_2D);
 			drawBelly();
 			drawSpikes(1,4.3);
 		}
 		if(counter%5 == 4)
 		{
-			drawCylindre(3.0,1.5,5);
+			drawCylindre(3.0,1.5,5,Tex_2D);
 			drawBelly();
 			drawSpikes(1,4.4);
 		}
