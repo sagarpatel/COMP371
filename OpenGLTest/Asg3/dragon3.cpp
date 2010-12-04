@@ -15,17 +15,17 @@
 
 #define PI 3.14159265
 
-GLdouble cam_position[3];	
-GLdouble cam_target[3];	
-GLdouble cam_up[3];	
+GLfloat cam_position[4];	
+GLfloat cam_target[4];	
+GLfloat cam_up[4];	
 
 
 GLuint tex_2D;
 
 
-double cam_theta;
-double cam_phi;
-double cam_radius;
+GLfloat cam_theta;
+GLfloat cam_phi;
+GLfloat cam_radius;
 
 int h,w;
 
@@ -54,8 +54,58 @@ void reshape (int w, int h);
 void keyboard(unsigned char key, int x, int y);
 void specialCallbackProc (int key, int x, int y);
 
+void idle(void);
 
 
+GLfloat white[] = { 1.0, 1.0, 1.0, 1.0 };	
+GLfloat red[] = { 1.0, 0, 0, 1.0 };	
+GLfloat blue[] = { 0, 0, 1.0, 1.0 };	
+
+
+
+GLfloat light_position[] = { 0.0, 125.0, 0.0, 1.0 };
+GLfloat light_direction[] = { 0.0, -1.0, 0.0 };
+GLfloat fSpotLight = 80.0;
+
+GLfloat *Lheight;
+
+
+GLfloat HeadMatrix[16];
+
+GLfloat light2_target[4];
+
+GLfloat light1_position[4];
+
+GLfloat light1_theta = 0.69;
+GLfloat light1_phi = -3.99;
+GLfloat light1_radius = 64;
+
+
+GLfloat light1_direction[] = { 0.0, -1.0, 0.0 };
+
+
+void normalizeCamTarget()
+{
+	GLfloat x;
+	GLfloat y;
+	GLfloat z;
+	GLfloat total;
+
+	x = cam_position[0] - cam_target[0];
+	y = cam_position[1] - cam_target[1];
+	z = cam_position[2] - cam_target[2];
+
+	total = x*x + y*y + z*z;
+	total  = sqrt(total);
+
+	light2_target[0] = -x/total;
+	light2_target[1] = -y/total;
+	light2_target[2] = -z/total;
+
+
+
+
+}
 
 
 //QuadricObjects quadricobjects(&Wired_or_Shade);
@@ -69,6 +119,7 @@ int main(int argc, char** argv)
 	glutInitWindowSize (800, 800); 
 	glutInitWindowPosition (100, 100);
 	glutCreateWindow (argv[0]);
+	glutIdleFunc(idle);
 
 	init ();
 
@@ -155,15 +206,43 @@ void init(void)
 
 	
 	//Sets lighting
-	glEnable(GL_LIGHTING);
-	glEnable(GL_LIGHT0);
+	
+
+
+
+//	glLightfv(GL_LIGHT0, GL_AMBIENT, white);
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, white);
+//	glLightfv(GL_LIGHT0, GL_SPECULAR, white);
+
+	
+	glLightf(GL_LIGHT0, GL_SPOT_EXPONENT, 2.0);
+	
+	// glLightf(GL_LIGHT0, GL_CONSTANT_ATTENUATION, 1.0);
+	// glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.0);
+	// glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.0);
+
+
+	glLightfv(GL_LIGHT1, GL_DIFFUSE, blue);
+	glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 2.0);
+
+	glLightfv(GL_LIGHT2, GL_DIFFUSE, red);
+	glLightf(GL_LIGHT2, GL_SPOT_EXPONENT, 2.0);
+
+
 
 	// Allows color on models with lighting
 	glEnable(GL_COLOR_MATERIAL);
 	glColorMaterial(GL_FRONT, GL_AMBIENT_AND_DIFFUSE);
+	glMaterialf(GL_FRONT, GL_SHININESS, 10.0);
 
-	
-	//dragonmodel.generateTail();
+	glEnable(GL_LIGHT0);
+	glEnable(GL_LIGHT1);
+	glEnable(GL_LIGHT2);
+
+
+	glEnable(GL_LIGHTING);
+
+
 
 }
 
@@ -204,9 +283,68 @@ void drawFloor(void)
 }
 
 
+void idle()
+
+{
+	
+	light1_theta += 0.09 * (PI/180);
+
+	light1_position[0] = light1_radius * sin(light1_phi) * sin(light1_theta);
+	light1_position[1] = -light1_radius * cos(light1_phi)+50;
+	light1_position[2] = light1_radius * sin(light1_phi) * cos(light1_theta);
+
+	
+	//printf(" \n %f %f %f",light1_position[0],light1_position[1],light1_position[2]);
+
+//	glutPostRedisplay ();
+
+}
+
+
 
 void display(void)
 {
+
+
+	for(int i =0;i<16;i++)
+	{
+		HeadMatrix[i] = dragonmodel.TransformMatrixArray[0][i];
+	}
+
+	light_position[0] = HeadMatrix[12];
+	light_position[1] = HeadMatrix[13];
+	light_position[2] = HeadMatrix[14];
+	
+	light_direction[0] = HeadMatrix[8];
+	light_direction[1] = HeadMatrix[9];
+	light_direction[2] = HeadMatrix[10];
+
+	normalizeCamTarget();
+
+	
+
+
+
+
+	
+	glLightfv(GL_LIGHT0, GL_POSITION, light_position);	
+	glLightfv(GL_LIGHT0, GL_SPOT_DIRECTION, light_direction);
+
+	glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, fSpotLight);
+
+
+
+
+
+	glLightfv(GL_LIGHT1, GL_POSITION, light1_position);	
+	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, light1_direction);
+
+	glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, fSpotLight);
+
+
+//glLoadIdentity();
+
+	
 
 	//135-206-250
 
@@ -227,6 +365,20 @@ void display(void)
 	cam_position[0] = cam_radius * sin(cam_phi) * sin(cam_theta);
 	cam_position[1] = cam_radius * cos(cam_phi);
 	cam_position[2] = cam_radius * sin(cam_phi) * cos(cam_theta);
+
+
+
+
+
+	glLightfv(GL_LIGHT2, GL_POSITION, cam_position);	
+	glLightfv(GL_LIGHT2, GL_SPOT_DIRECTION, light2_target);
+
+	glLightf(GL_LIGHT2, GL_SPOT_CUTOFF, 20);
+
+
+
+
+
 	
 	
 	if(cameraFlag == false)
@@ -241,6 +393,7 @@ void display(void)
 	{
 		dragonmodel.updateCamera();
 	}
+
 
 	drawFloor();
 
@@ -368,12 +521,23 @@ void keyboard(unsigned char key, int x, int y)
 			break;
 
 		case 'r':
+	
 			glLoadIdentity();
 			dragonmodel.generateBody();
 			dragonmodel.generateTail();
 
+		
+		case '-':
+			fSpotLight -=2;
+			break;
+
+		case '=':
+			fSpotLight +=2;
+			break;
+
 
 		case 'k':
+
 			Pitch += 1;
 			Yaw = 0;
 			Roll = 0;
@@ -383,6 +547,7 @@ void keyboard(unsigned char key, int x, int y)
 			break;
 		
 		case 'i':
+
 			Pitch -= 1;
 			Yaw = 0;
 			Roll = 0;
@@ -477,6 +642,35 @@ void keyboard(unsigned char key, int x, int y)
 			cam_radius = 100;
 			cam_phi = 0.69;
 			cam_theta = -3.99;
+		
+		break;
+
+		case '4':	
+			glEnable(GL_LIGHT0);
+		break;
+
+		case '5':	
+			glEnable(GL_LIGHT1);
+		
+		break;
+
+		case '6':	
+			glEnable(GL_LIGHT2);
+		
+		break;
+
+		case '7':	
+			glDisable(GL_LIGHT0);
+		
+		break;
+
+		case '8':	
+			glDisable(GL_LIGHT1);
+		
+		break;
+
+		case '9':	
+			glDisable(GL_LIGHT2);
 		
 		break;
 
