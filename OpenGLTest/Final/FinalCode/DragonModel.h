@@ -46,6 +46,12 @@ public:
 
 	}
 
+	float getTransformMatrixArrayValue(int Matrix,int i)
+	{
+		
+		return TransformMatrixArray[Matrix][i];
+	}
+
 
 		
 	void showReferenceAxis(void)
@@ -75,6 +81,12 @@ public:
 	{
 
 		drawCylindre(BaseRadius,0, Height,8,2);
+	}
+
+	void drawConeTree(float BaseRadius, float Height)
+	{
+
+		drawCylindre(BaseRadius,0, Height,16,2);
 	}
 
 	void drawSpikes(float BaseRadius, float Height)
@@ -919,14 +931,16 @@ public:
 
 		glGetFloatv(GL_MODELVIEW_MATRIX , CameraTarget);
 
-		glPopMatrix();
+		 glPopMatrix();
 
+		// glPushMatrix();
 
 
 		gluLookAt(TransformMatrixArray[0][12],TransformMatrixArray[0][13],TransformMatrixArray[0][14],
 			  	  CameraTarget[12],CameraTarget[13],CameraTarget[14],
 			  	  TransformMatrixArray[0][4],TransformMatrixArray[0][5],TransformMatrixArray[0][7]); //Thanks Henk!
 		
+		//glPopMatrix();
 
 	}
 
@@ -1055,7 +1069,7 @@ public:
 	void drawTrees2(void)
 	{
 
-		int tree_height = 20;
+		int tree_height = 12;
 		int tree_thickness = 4;
 
 		glPushMatrix();
@@ -1092,8 +1106,10 @@ public:
 
 
 
-	void drawTrees(void)
+	void drawTrees()
 	{
+		
+
 
 		int tree_height = 10;
 		int tree_thickness = 2;
@@ -1112,6 +1128,7 @@ public:
 		glRotatef(-90,1,0,0);
 
 		//showReferenceAxis();
+
 		drawCylindre(tree_thickness,tree_thickness,tree_height);
 
 
@@ -1122,7 +1139,10 @@ public:
 		// Converted = 1, 0.33984375, 0
 		glColor3f(1, 0.233984375, .05);
 
-		drawSphere(8.0,15,15);
+
+		drawSphere(8.0,8,8);
+
+
 
 		glPopAttrib();
 		glPopMatrix();
@@ -1134,7 +1154,7 @@ public:
 	{
 
 		int tree_height = 50;
-		int tree_thickness = 8;
+		int tree_thickness = 4;
 
 		glPushMatrix();
 		glPushAttrib(GL_CURRENT_BIT);
@@ -1160,7 +1180,7 @@ public:
 		// Converted = 1, 0.33984375, 0
 		glColor3f(1, 0.233984375, .05);
 
-		drawSphere(25,50,50);
+		drawSphere(15,15,15);
 
 		glPopAttrib();
 		glPopMatrix();
@@ -1192,14 +1212,14 @@ public:
 
 		glColor3f(0.1, .9, 0.2);
 
-		glTranslatef(0,0,tree_height/4);
-
-
-		drawCone(tree_thickness*2.5,tree_height);
 		glTranslatef(0,0,tree_height/3);
-		drawCone(tree_thickness*2.1,tree_height*0.9);
+
+
+		drawConeTree(tree_thickness*2.5,tree_height);
+		glTranslatef(0,0,tree_height/3);
+		drawConeTree(tree_thickness*2.1,tree_height*0.9);
 		glTranslatef(0,0,tree_height/4);
-		drawCone(tree_thickness*1.85,tree_height*0.9);
+		drawConeTree(tree_thickness*1.85,tree_height*0.9);
 		
 		//drawCone(tree_thickness*1.65,tree_height*0.4);
 		
