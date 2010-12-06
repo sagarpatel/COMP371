@@ -120,6 +120,8 @@ GLfloat light1_direction[] = { 0.0, -1.0, 0.0 };
 
 const GLfloat shine[] = { 128.0 };
 
+int colorflag = 0;
+
 int bodyCounter = 0;
 
 // Function Prototypes
@@ -804,15 +806,21 @@ glPushAttrib(GL_ALL_ATTRIB_BITS);
 
 	glTranslatef(0,20,0);
 
-	glDisable(GL_COLOR_MATERIAL);
-	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, trans);
-	glMaterialfv(GL_FRONT, GL_SHININESS, shine);
-	glMaterialfv(GL_BACK, GL_AMBIENT_AND_DIFFUSE, trans);
-	glMaterialfv(GL_BACK, GL_SHININESS, shine);
-	
+	if(colorflag == 0)
+	{
+		glDisable(GL_COLOR_MATERIAL);
+		glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, trans);
+		glMaterialfv(GL_FRONT, GL_SHININESS, shine);
+		glMaterialfv(GL_BACK, GL_AMBIENT_AND_DIFFUSE, trans);
+		glMaterialfv(GL_BACK, GL_SHININESS, shine);
+	}
+		
 	dragonmodel.drawDragon();
 
-	glEnable(GL_COLOR_MATERIAL);
+	if(colorflag == 0)
+	{
+		glEnable(GL_COLOR_MATERIAL);
+	}
 
 
 
@@ -1045,12 +1053,11 @@ void keyboard(unsigned char key, int x, int y)
 		break;
 
 		case 'g':
-			bodyCounter++;
-			if(bodyCounter==345)
-			{
-				bodyCounter = 0;
-			}
-			printf("%d \n",bodyCounter);
+			colorflag = 1;
+		break;
+
+		case 'G':
+			colorflag = 0;
 		break;
 
 		case '4':	
