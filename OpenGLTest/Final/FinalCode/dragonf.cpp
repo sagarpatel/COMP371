@@ -477,21 +477,18 @@ void idle()
 
 
 
-	transcounter += 0.05;
+	transcounter += 0.1;
 
-	if(transcounter>0.95)
-	{
-		transcounter = 0;
-
-	}
+	GLfloat xtrig = sin(transcounter) * sin(transcounter);
 
 	//trans = {0.4f,0.4f,0.4f,transcounter};
 
 	trans[0] = 0.4f;
 	trans[1] = 0.4f;
 	trans[2] = 0.4f;
-	trans[3] = transcounter;
+	trans[3] = xtrig;
 
+	printf("sin %f",xtrig);
 
 
  	angle += 0.1;
