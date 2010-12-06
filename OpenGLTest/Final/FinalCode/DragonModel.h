@@ -1018,8 +1018,9 @@ public:
 
 			if(i==0)
 			{
-				
+				///glEnable(GL_COLOR_MATERIAL);
 				drawHead();
+				//glDisable(GL_COLOR_MATERIAL);
 			}
 
 

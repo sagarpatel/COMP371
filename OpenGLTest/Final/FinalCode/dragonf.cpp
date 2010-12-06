@@ -25,7 +25,7 @@ GLfloat cam_target[4];
 GLfloat cam_up[4];	
 
 //fog variables
-GLfloat density = 0.0115;
+GLfloat density = 0.0075;
 GLfloat fogColor[4] = {0.25, 0.25, 0.25, 1.0}; 
 
 //end of fog variables
@@ -75,6 +75,10 @@ GLfloat light_position[] = { 0.0, 125.0, 0.0, 1.0 };
 GLfloat light_direction[] = { 0.0, -1.0, 0.0 };
 
 
+GLfloat lightBody_position[] = { 0.0, 125.0, 0.0, 1.0 };
+//GLfloat lightBody_direction[] = { 0.0, -1.0, 0.0 };
+
+
 GLfloat fSpotLight = 15.0; //Dragons head light range
 
 GLfloat *Lheight;
@@ -95,7 +99,7 @@ float move_z = 0.0;
 
 /////////////////code for sun
 // Position the sun at the edge
-const GLfloat light_pos[] = { move_x, move_y, move_z, 1.0 };
+GLfloat light_pos[] = { move_x, move_y, move_z, 1.0 };
 // Attenuation factors for sun
 GLfloat const_att = 1.0;
 // Translation values for sun
@@ -105,18 +109,18 @@ int sunSpeed = 1;
 int sunCount = 0;
 
 //////////////////end of code for sun
+GLfloat transcounter = 0.01f;
 
-
-GLfloat trans[] = {0.4f,0.4f,0.4f,0.5f};
+GLfloat trans[] = {0.4f,0.4f,0.4f,transcounter};
 
 
 
 
 GLfloat light1_direction[] = { 0.0, -1.0, 0.0 };
 
-const GLfloat shine[] = { 111.0 };
+const GLfloat shine[] = { 128.0 };
 
-
+int bodyCounter = 0;
 
 // Function Prototypes
 void init(void);
@@ -339,11 +343,20 @@ glHint (GL_FOG_HINT, GL_NICEST); // set the fog to look the nicest, may slow dow
 	 glLightf(GL_LIGHT0, GL_LINEAR_ATTENUATION, 0.0015);
 
 
+	glLightfv(GL_LIGHT7, GL_DIFFUSE, white);
+	glLightfv(GL_LIGHT7, GL_SPECULAR, white);
+
+
+	glLightfv(GL_LIGHT5, GL_DIFFUSE, white);
+	glLightfv(GL_LIGHT5, GL_SPECULAR, white);
+	//glLightf(GL_LIGHT5, GL_SPOT_EXPONENT, 2.0);
+	glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.0015);
+
 	glLightfv(GL_LIGHT1, GL_DIFFUSE, blue);
 	glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 2.0);
 
-	glLightfv(GL_LIGHT2, GL_DIFFUSE, red);
-	glLightf(GL_LIGHT2, GL_SPOT_EXPONENT, 2.0);
+	// glLightfv(GL_LIGHT2, GL_DIFFUSE, red);
+	// glLightf(GL_LIGHT2, GL_SPOT_EXPONENT, 2.0);
 
 
 	
@@ -357,15 +370,17 @@ glHint (GL_FOG_HINT, GL_NICEST); // set the fog to look the nicest, may slow dow
 
 	glLightfv(GL_LIGHT4, GL_DIFFUSE, suncolor);
 
-	glLightf(GL_LIGHT4, GL_LINEAR_ATTENUATION, 0.01);
+	glLightf(GL_LIGHT4, GL_LINEAR_ATTENUATION, 0.00);
 	
 	glLightfv(GL_LIGHT0, GL_SPECULAR, white);
 	
 	glEnable(GL_LIGHT0);
 	glEnable(GL_LIGHT4);
+	glEnable(GL_LIGHT7);
+
+	glEnable(GL_LIGHT5);
 	//glEnable(GL_LIGHT1);
 	//glEnable(GL_LIGHT2);
-
 
 	glEnable(GL_LIGHTING);
 
@@ -401,8 +416,8 @@ void drawSun()
 {
 
 float	radius = 5;
-float	slices = 10;
-float	rings = 10; 
+GLint	slices = 10;
+GLint	rings = 10; 
 
 	glPushMatrix();
 
@@ -460,20 +475,36 @@ void idle()
 
 
 
+	transcounter += 0.05;
+
+	if(transcounter>0.95)
+	{
+		transcounter = 0;
+
+	}
+
+	//trans = {0.4f,0.4f,0.4f,transcounter};
+
+	trans[0] = 0.4f;
+	trans[1] = 0.4f;
+	trans[2] = 0.4f;
+	trans[3] = transcounter;
 
 
- 	angle += 0.05;
+
+ 	angle += 0.1;
  // 	if(angle>360)
  // 	{
  // 		angle = 0;
  // 	}
-	 move_x = cos(angle)* 400 ;
-	 move_y = sin(angle)* 400;
+	 move_x = cos(angle)* 800 ;
+	 move_y = sin(angle)* 800;
+	 move_z = 0;
 
 	// if (sin(angle) < 0)
 	// 	angle = 0;
 
-
+	GLfloat light_pos[] = {move_x,move_y,move_z,1.0};
 
 	//code to display light location
 	//printf("%f %f \n",move_y,move_z);
@@ -488,6 +519,26 @@ void idle()
 
 	
 	//printf(" \n %f %f %f",light1_position[0],light1_position[1],light1_position[2]);
+
+
+	if(bodyCounter>345)
+	{
+		bodyCounter = 0;
+	}
+
+	
+	lightBody_position[0] = dragonmodel.getTransformMatrixArrayValue(bodyCounter,12);
+	lightBody_position[1] = dragonmodel.getTransformMatrixArrayValue(bodyCounter,13);
+	lightBody_position[2] = dragonmodel.getTransformMatrixArrayValue(bodyCounter,14);
+
+
+	lightBody_position[0] += 0.1*lightBody_position[0];
+	lightBody_position[1] += 0.1*lightBody_position[1];
+	lightBody_position[2] += 0.1*lightBody_position[2];
+
+	bodyCounter+=6;
+	printf("%d \n",bodyCounter);
+
 
 	glutPostRedisplay ();
 
@@ -547,13 +598,25 @@ void display(void)
 	glLightf(GL_LIGHT0, GL_SPOT_CUTOFF, fSpotLight);
 
 
+	glLightfv(GL_LIGHT7, GL_POSITION, light_position);	
+	glLightfv(GL_LIGHT7, GL_SPOT_DIRECTION, light_direction);
+
+	glLightf(GL_LIGHT7, GL_SPOT_CUTOFF, fSpotLight);
 
 
 
-	glLightfv(GL_LIGHT1, GL_POSITION, light1_position);	
-	glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, light1_direction);
 
-	glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, fSpotLight);
+// 	glLightfv(GL_LIGHT5, GL_POSITION, lightBody_position);	
+// glLightfv(GL_LIGHT5, GL_SPOT_DIRECTION, light_direction);
+
+	glLightf(GL_LIGHT5, GL_SPOT_CUTOFF, fSpotLight);
+
+
+
+	// glLightfv(GL_LIGHT1, GL_POSITION, light1_position);	
+	// glLightfv(GL_LIGHT1, GL_SPOT_DIRECTION, light1_direction);
+
+	// glLightf(GL_LIGHT1, GL_SPOT_CUTOFF, fSpotLight);
 
 
 //glLoadIdentity();
@@ -621,12 +684,12 @@ void display(void)
 	// 	cam_radius += diff;
 	// }
 	
-	if(cam_radius>wanted_cam_radius)
-	{
-		cam_radius += 0.05*(diff);
-	}
-	else
-		cam_radius  -= 0.05*(diff); //-= 0.5*(diff);
+	// if(cam_radius>wanted_cam_radius)
+	// {
+	// 	cam_radius += 0.05*(diff);
+	// }
+	// else
+	// 	cam_radius  -= 0.05*(diff); //-= 0.5*(diff);
 
 	
 
@@ -744,6 +807,8 @@ glPushAttrib(GL_ALL_ATTRIB_BITS);
 	glDisable(GL_COLOR_MATERIAL);
 	glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, trans);
 	glMaterialfv(GL_FRONT, GL_SHININESS, shine);
+	glMaterialfv(GL_BACK, GL_AMBIENT_AND_DIFFUSE, trans);
+	glMaterialfv(GL_BACK, GL_SHININESS, shine);
 	
 	dragonmodel.drawDragon();
 
@@ -930,11 +995,11 @@ void keyboard(unsigned char key, int x, int y)
 			break;
 
 		case 'f':				// Move Camera forward.
-			cam_radius -= 1.5;
+			cam_radius -= 4;
 			break;
 
 		case 'b' :				// Move Camera backward.
-			cam_radius += 1.5;
+			cam_radius += 4;
 			break;
 
 		case 'w':
@@ -977,6 +1042,15 @@ void keyboard(unsigned char key, int x, int y)
 			cam_theta = -3.99;
 			wanted_cam_radius = 15;
 		
+		break;
+
+		case 'g':
+			bodyCounter++;
+			if(bodyCounter==345)
+			{
+				bodyCounter = 0;
+			}
+			printf("%d \n",bodyCounter);
 		break;
 
 		case '4':	

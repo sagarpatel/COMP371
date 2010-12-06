@@ -57,7 +57,7 @@ public:
 
 	glPushAttrib(GL_ALL_ATTRIB_BITS); 
 
-	glColor4f(1.0, 1.0, 1.0, 1.0);
+	//glColor4f(1.0, 1.0, 1.0, 1.0);
 
 	glEnable(GL_TEXTURE_2D);
 	
