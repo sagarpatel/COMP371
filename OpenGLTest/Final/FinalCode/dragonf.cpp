@@ -25,8 +25,8 @@ GLfloat cam_target[4];
 GLfloat cam_up[4];	
 
 //fog variables
-GLfloat density = 0.0075;
-GLfloat fogColor[4] = {0.25, 0.25, 0.25, 1.0}; 
+GLfloat density = 0.0085;
+GLfloat fogColor[4] = {0.35, 0.35, 0.35, 1.0}; 
 
 //end of fog variables
 
@@ -270,7 +270,7 @@ glFogi (GL_FOG_MODE, GL_EXP2); //set the fog mode to GL_EXP2
 
 glFogfv (GL_FOG_COLOR, fogColor); //set the fog color to our color chosen above
 
-glFogf (GL_FOG_DENSITY, density); //set the density to the value above
+//lFogf (GL_FOG_DENSITY, density); //set the density to the value above
 
 glHint (GL_FOG_HINT, GL_NICEST); // set the fog to look the nicest, may slow down on older cards
 	/////////////////////end of fog stuff
@@ -352,7 +352,7 @@ glHint (GL_FOG_HINT, GL_NICEST); // set the fog to look the nicest, may slow dow
 	glLightfv(GL_LIGHT5, GL_DIFFUSE, white);
 	glLightfv(GL_LIGHT5, GL_SPECULAR, white);
 	//glLightf(GL_LIGHT5, GL_SPOT_EXPONENT, 2.0);
-	glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.0015);
+	glLightf(GL_LIGHT0, GL_QUADRATIC_ATTENUATION, 0.15);
 
 	glLightfv(GL_LIGHT1, GL_DIFFUSE, blue);
 	glLightf(GL_LIGHT1, GL_SPOT_EXPONENT, 2.0);
@@ -477,18 +477,23 @@ void idle()
 
 
 
-	transcounter += 0.1;
+	transcounter += 0.05;
 
 	GLfloat xtrig = sin(transcounter) * sin(transcounter);
 
 	//trans = {0.4f,0.4f,0.4f,transcounter};
+
+	if(xtrig >0.6)
+	{
+		xtrig = 0.6;
+	}
 
 	trans[0] = 0.4f;
 	trans[1] = 0.4f;
 	trans[2] = 0.4f;
 	trans[3] = xtrig;
 
-	printf("sin %f",xtrig);
+	//printf("sin %f",xtrig);
 
 
  	angle += 0.1;
@@ -535,8 +540,8 @@ void idle()
 	lightBody_position[1] += 0.1*lightBody_position[1];
 	lightBody_position[2] += 0.1*lightBody_position[2];
 
-	bodyCounter+=6;
-	printf("%d \n",bodyCounter);
+	bodyCounter+=20;
+	//printf("%d \n",bodyCounter);
 
 
 	glutPostRedisplay ();
@@ -549,7 +554,9 @@ void display(void)
 
 
 
+	glFogf (GL_FOG_DENSITY, density);
 
+	printf("%f \n",density);
 
 		// Position the light and show where it is
 	glPushMatrix();
@@ -871,11 +878,19 @@ void keyboard(unsigned char key, int x, int y)
 
 		
 		case '-':
-			fSpotLight -=2;
+			density -=0.0005;
+			if(density<0)
+			{
+				density = 0;
+			}
 			break;
 
 		case '=':
-			fSpotLight +=2;
+			density +=0.0005;
+			if(density>1)
+			{
+				density = 1;
+			}
 			break;
 
 
@@ -1067,7 +1082,7 @@ void keyboard(unsigned char key, int x, int y)
 		break;
 
 		case '6':	
-			glEnable(GL_LIGHT2);
+			glEnable(GL_LIGHT5);
 		
 		break;
 
@@ -1082,7 +1097,7 @@ void keyboard(unsigned char key, int x, int y)
 		break;
 
 		case '9':	
-			glDisable(GL_LIGHT2);
+			glDisable(GL_LIGHT5);
 		
 		break;
 
